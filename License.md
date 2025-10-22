@@ -9,7 +9,7 @@ This license enables reusers to distribute, remix, adapt, and build upon the mat
  SA: Adaptations must be shared under the same terms.
 
 ## Disclaimer
-NO WARRENTY
+NO WARRENTY PROVIDED,
 NO LIABILITY
 
 ## Get More Info:
