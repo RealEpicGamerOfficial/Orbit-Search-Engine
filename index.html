@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orbit Search Browser | by Real_EpicGamer</title>
+    <title>Orbit Search Browser</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪐</text></svg>">
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -16,12 +16,12 @@
         /* Custom focus styles for better visibility on dark bg */
         .focus-orbit:focus {
             outline: none;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.5); /* blue-500 with 50% opacity */
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); /* blue-500 with 50% opacity */
         }
         /* Custom radio button styles */
         .search-engine-radio:checked + label {
-            background-color: #4f46e5; /* blue-600 */
-            border-color: #6366f1; /* blue-500 */
+            background-color: #2563eb; /* blue-600 */
+            border-color: #3b82f6; /* blue-500 */
             color: white;
         }
     </style>
@@ -33,9 +33,9 @@
         
         <!-- Header -->
         <div class="text-center mb-6">
-            <h1 class="text-4xl font-bold text-blue-400 mb-2">Orbit</h1>
-            <p class="text-lg text-gray-300">Search the web.</p>
-            <p class="text-lg text-lightgray-300">Instant searching, no account, minimal tracking.</p>
+            <h1 class="text-4xl font-bold text-blue-300 mb-2">Orbit</h1>
+            <p class="text-lg text-gray-200">Search the web.</p>
+            <p class="text-sm text-gray-300">Instant searching, no account, minimal tracking.</p>
         </div>
 
         <!-- Search Form -->
@@ -77,6 +77,24 @@
                         DuckDuckGo
                     </label>
                 </div>
+                <div>
+                    <input type="radio" id="engine-brave" name="search-engine" value="brave" class="sr-only search-engine-radio">
+                    <label for="engine-brave" class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">
+                        Brave
+                    </label>
+                </div>
+                <div>
+                    <input type="radio" id="engine-ecosia" name="search-engine" value="ecosia" class="sr-only search-engine-radio">
+                    <label for="engine-ecosia" class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">
+                        Ecosia
+                    </label>
+                </div>
+                <div>
+                    <input type="radio" id="engine-qwant" name="search-engine" value="qwant" class="sr-only search-engine-radio">
+                    <label for="engine-qwant" class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">
+                        Qwant
+                    </label>
+                </div>
             </fieldset>
             
             <!-- Search Button -->
@@ -92,21 +110,21 @@
     <!-- Search History -->
     <div class="w-full max-w-lg">
         <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-semibold text-gray-300">Search History</h2>
-            <button id="clear-history" class="text-sm text-blue-400 hover:text-blue-300 focus-orbit rounded-md px-2 py-1">
+            <h2 class="text-xl font-semibold text-gray-200">Search History</h2>
+            <button id="clear-history" class="text-sm text-gray-300 hover:text-gray-200 focus-orbit rounded-md px-2 py-1">
                 Clear History
             </button>
         </div>
         <div id="history-container" class="space-y-2">
             <!-- History items will be injected here -->
-            <p id="no-history-message" class="text-gray-500 text-center">No searches yet.</p>
+            <p id="no-history-message" class="text-gray-400 text-center">No searches yet.</p>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const searchInput = document.getElementById('search-input');
-            const searchButton = document.getElementById('search-button'); // <-- This line was missing/incorrect
+            const searchButton = document.getElementById('search-button'); 
             const historyContainer = document.getElementById('history-container');
             const noHistoryMessage = document.getElementById('no-history-message');
             const clearHistoryButton = document.getElementById('clear-history');
@@ -116,16 +134,13 @@
             const MAX_HISTORY_ITEMS = 10;
 
             // --- SafeSearch Blocklist ---
-            // future note: add encription on this list, add more words, and use SmartDetect
-            // make this damn list opitional (aka, allow user to turn off with a random, highly complex math question that AI can't solve)
+            // This is a small example list to show how the filter works.
+            // A real app would have a much larger list of words.
             const blockedWords = [
-                'explict',
-                'bypass',
-                'mature',
-                '18+',
-                '21+',
-                'drugs'
-                // ... additional (newer) explict langauge and words should be added as soon as possable
+                'filterme',
+                'blockthis',
+                'badword'
+                // ... more words would be added here
             ];
 
             /**
@@ -261,6 +276,15 @@
                     case 'duckduckgo':
                         searchUrl = `https://duckduckgo.com/?q=${formattedQuery}`;
                         break;
+                    case 'brave':
+                        searchUrl = `https://search.brave.com/search?q=${formattedQuery}`;
+                        break;
+                    case 'ecosia':
+                        searchUrl = `https://www.ecosia.org/search?q=${formattedQuery}`;
+                        break;
+                    case 'qwant':
+                        searchUrl = `https://www.qwant.com/?q=${formattedQuery}`;
+                        break;
                     case 'google':
                     default:
                         searchUrl = `https://www.google.com/search?q=${formattedQuery}`;
@@ -296,4 +320,6 @@
 
 </body>
 </html>
+
+
 
