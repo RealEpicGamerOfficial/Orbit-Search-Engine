@@ -15,6 +15,9 @@ SafeSearch (coming soon, currently built-in and can't be dissabled)
 Selected Engine (3 Opitions, more coming soon)
 Advanced Search Settings (currently work, menu coming soon)
 
+### Luna AI
+Luna is Orbit's AI, at this current time, only a demo is in use.
+
 ### Overall Info (and Sales Pitch)
 No account needed EVER, and minimum tracking.
 
