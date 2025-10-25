@@ -7,135 +7,486 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪐</text></svg>">
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Material Symbols Outlined for Luna AI Icon -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
     <!-- Use Inter font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            overflow: hidden; /* Prevent body scroll */
         }
-        /* Custom focus styles for better visibility on dark bg */
-        .focus-orbit:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); /* blue-500 with 50% opacity */
+        /* Focus Indicator Subtlety: Keeps basic accessibility while removing aggressive focus rings. */
+        .search-input:focus, .search-button:focus, button:focus, select:focus {
+            outline: none; 
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1); 
         }
+
         /* Custom radio button styles */
         .search-engine-radio:checked + label {
             background-color: #2563eb; /* blue-600 */
             border-color: #3b82f6; /* blue-500 */
             color: white;
         }
+
+        /* --- Tab Styles --- */
+        .tab-bar {
+            display: flex;
+            background-color: #1f2937; /* gray-800 */
+            padding: 4px 4px 0 4px;
+            border-bottom: 1px solid #374151; /* gray-700 */
+            flex-shrink: 0; 
+        }
+        .tab-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            background-color: #374151; /* gray-700 */
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+            cursor: pointer;
+            margin-right: 2px;
+            border: 1px solid transparent;
+            border-bottom: none;
+            max-width: 200px;
+        }
+        .tab-item.active {
+            background-color: #111827; /* gray-900 */
+            border-color: #4b5563; /* gray-600 */
+            position: relative;
+            z-index: 10;
+        }
+        .tab-item:not(.active):hover {
+            background-color: #4b5563; /* gray-600 */
+        }
+        .tab-title {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-right: 8px;
+            font-size: 0.875rem;
+        }
+        .close-tab {
+            font-size: 1rem;
+            line-height: 1;
+            padding: 2px;
+            border-radius: 50%;
+            background-color: transparent;
+            color: #d1d5db; /* gray-300 */
+        }
+        .close-tab:hover {
+            background-color: #4b5563; /* gray-600 */
+            color: white;
+        }
+        .tab-content-area {
+            flex-grow: 1; /* Allows it to take up all remaining vertical space */
+            position: relative; 
+        }
+        .tab-pane {
+            display: none; 
+            height: 100%;
+            width: 100%;
+            background-color: #111827; /* gray-900 */
+            overflow: auto;
+            position: absolute; 
+            top: 0;
+            left: 0;
+        }
+        .tab-pane.active {
+            display: block; 
+            z-index: 5; 
+        }
+        .tab-pane iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background-color: #fff; 
+        }
+
+        /* --- Mode Switching Styles --- */
+
+        /* Classic Mode (Default) */
+        body.classic-mode #tab-bar { display: none; }
+        body.classic-mode #tab-content-area { display: none; }
+        body.classic-mode #new-tab-page-default {
+            display: flex; 
+            position: relative; 
+            height: 100vh; 
+            flex-grow: 1;
+        }
+
+        /* Web Browser Mini Mode */
+        body.web-browser-mode #tab-bar { display: flex; }
+        body.web-browser-mode #tab-content-area { display: block; }
+        body.web-browser-mode #new-tab-page-default {
+            display: none; 
+            position: absolute; 
+            height: 100%;
+        }
+        body.web-browser-mode #new-tab-page-default.active {
+            display: flex; 
+        }
+
+        /* Web Browser Mini - Only show Bing radio button when in Web Browser Mini mode */
+        body.web-browser-mode .search-engine-option-container:not([data-engine="bing"]) {
+            display: none;
+        }
+
+        /* Luna AI Panel Visibility */
+        #luna-ai-panel.open {
+            transform: translateX(0);
+        }
+
     </style>
 </head>
-<body class="bg-gray-900 text-white min-h-screen flex flex-col items-center justify-center p-4">
+<!-- The body is set to flex column and takes min-h-screen to ensure full viewport use -->
+<body class="bg-gray-900 text-white min-h-screen flex flex-col classic-mode"> 
 
-    <!-- Main Search Card -->
-    <div class="bg-gray-800 p-8 rounded-xl shadow-2xl w-full max-w-lg border border-gray-700 mb-8">
-        
-        <!-- Header -->
-        <div class="text-center mb-6">
-            <h1 class="text-4xl font-bold text-blue-300 mb-2">Orbit</h1>
-            <p class="text-lg text-gray-200">Search the web.</p>
-            <p class="text-sm text-gray-300">Instant searching, no account, minimal tracking.</p>
+    <!-- Tab Bar -->
+    <div id="tab-bar" class="tab-bar">
+        <!-- New Tab (Default) -->
+        <div id="new-tab-button-default" class="tab-item active" data-tab-id="new-tab-page-default">
+            <span class="tab-title">New Tab 🪐</span>
+            <!-- No close button for the main tab -->
         </div>
+        <!-- Search tabs will be added here -->
+        <button id="add-new-tab" title="New search tab" class="tab-item" style="padding: 8px 10px; background-color: #374151; border-radius: 6px; margin-left: 4px; font-size: 1.2rem; line-height: 1; border-color: #4b5563;">
+            +
+        </button>
+    </div>
 
-        <!-- Search Form -->
-        <div class="space-y-4">
-            <!-- Input Field -->
-            <div>
-                <label for="search-input" class="sr-only">Search</label>
-                <input 
-                    type="text" 
-                    id="search-input" 
-                    placeholder="Search for 'Google Classroom'..." 
-                    class="w-full p-4 bg-gray-700 text-white rounded-lg border border-gray-600 focus-orbit transition-all"
+    <!-- Tab Content Area (for iframes and search UIs) -->
+    <div id="tab-content-area" class="tab-content-area">
+        <!-- iframe panes will be added here -->
+    </div>
+
+    <!-- New Tab Page Content (The Search UI) -->
+    <div id="new-tab-page-default" class="tab-pane active flex flex-col items-center justify-center p-4">
+        <!-- This content will be cloned -->
+        <div class="search-ui-container bg-gray-800 p-8 rounded-xl shadow-2xl w-full max-w-lg border border-gray-700">
+            
+            <!-- Header -->
+            <div class="flex justify-between items-center text-center mb-6">
+                <!-- Spacer -->
+                <div class="w-8"></div>
+                <!-- Title -->
+                <div class="flex-1">
+                    <h1 class="text-4xl font-bold text-blue-300 mb-2">Orbit</h1>
+                    <p class="text-lg text-gray-200">Search the web.</p>
+                </div>
+                <!-- Settings Button -->
+                <button id="settings-button" title="Settings" class="text-gray-400 hover:text-white transition-colors w-8">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 0 1 1.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.108 1.204.165.397.505.71.93.78l.893.15c.543.09.94.56.94 1.11v1.093c0 .55-.397 1.02-.94 1.11l-.893.149c-.425.07-.765.383-.93.78-.165.398-.143.854.108 1.204l.527.738c.32.447.27.058-.12 1.45l-.774.773a1.125 1.125 0 0 1-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.108-.397.165-.71.505-.78.93l-.15.893c-.09.543-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.149-.894c-.07-.424-.384-.764-.78-.93-.398-.164-.855-.142-1.205.108l-.737.527a1.125 1.125 0 0 1-1.45-.12l-.773-.774a1.125 1.125 0 0 1-.12-1.45l.527-.737c.25-.35.272-.806.108-1.204-.165-.397-.505-.71-.93-.78l-.893-.15c-.543-.09-.94-.56-.94-1.11v-1.093c0-.55.397-1.02.94-1.11l.893-.149c.425-.07.765-.383.93-.78.165.398.143.854-.108-1.204l-.527-.738a1.125 1.125 0 0 1 .12-1.45l.773-.773a1.125 1.125 0 0 1 1.45-.12l.737.527c.35.25.806.272 1.203.108.397-.165.71-.505.78-.93l.15-.893Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Search Form -->
+            <div class="space-y-4">
+                <!-- Input Field -->
+                <div>
+                    <label for="search-input-default" class="sr-only">Search</label>
+                    <input 
+                        type="text" 
+                        id="search-input-default"
+                        {{-- REMOVED STATIC PLACEHOLDER HERE --}}
+                        class="w-full p-4 bg-gray-700 text-white rounded-lg border border-gray-600 transition-all search-input"
+                    >
+                </div>
+
+                <!-- Message Area -->
+                <div class="text-red-400 text-sm text-center hidden p-2 rounded-lg bg-red-900/20 border border-red-400/30 message-area">
+                    <!-- Error messages will be shown here -->
+                </div>
+
+                <!-- Search Engine Selector (ALL 8 Engines) - NOW IN 3-COLUMN GRID -->
+                <fieldset class="grid grid-cols-3 gap-2">
+                    <legend class="sr-only">Select a search engine</legend>
+                    
+                    <!-- Google -->
+                    <div class="search-engine-option-container" data-engine="google">
+                        <input type="radio" id="engine-google-default" name="search-engine-default" value="google" class="sr-only search-engine-radio" checked>
+                        <label for="engine-google-default" class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">
+                            Google
+                        </label>
+                    </div>
+                    
+                    <!-- Bing -->
+                    <div class="search-engine-option-container" data-engine="bing">
+                        <input type="radio" id="engine-bing-default" name="search-engine-default" value="bing" class="sr-only search-engine-radio">
+                        <label for="engine-bing-default" class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">
+                            Bing
+                        </label>
+                    </div>
+                    
+                    <!-- DuckDuckGo -->
+                    <div class="search-engine-option-container" data-engine="duckduckgo">
+                        <input type="radio" id="engine-duckduckgo-default" name="search-engine-default" value="duckduckgo" class="sr-only search-engine-radio">
+                        <label for="engine-duckduckgo-default" class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">
+                            DuckDuckGo
+                        </label>
+                    </div>
+                    
+                    <!-- Brave -->
+                    <div class="search-engine-option-container" data-engine="brave">
+                        <input type="radio" id="engine-brave-default" name="search-engine-default" value="brave" class="sr-only search-engine-radio">
+                        <label for="engine-brave-default" class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">
+                            Brave
+                        </label>
+                    </div>
+                    
+                    <!-- Ecosia -->
+                    <div class="search-engine-option-container" data-engine="ecosia">
+                        <input type="radio" id="engine-ecosia-default" name="search-engine-default" value="ecosia" class="sr-only search-engine-radio">
+                        <label for="engine-ecosia-default" class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">
+                            Ecosia
+                        </label>
+                    </div>
+                    
+                    <!-- Qwant -->
+                    <div class="search-engine-option-container" data-engine="qwant">
+                        <input type="radio" id="engine-qwant-default" name="search-engine-default" value="qwant" class="sr-only search-engine-radio">
+                        <label for="engine-qwant-default" class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">
+                            Qwant
+                        </label>
+                    </div>
+
+                    <!-- Yahoo -->
+                    <div class="search-engine-option-container" data-engine="yahoo">
+                        <input type="radio" id="engine-yahoo-default" name="search-engine-default" value="yahoo" class="sr-only search-engine-radio">
+                        <label for="engine-yahoo-default" class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">
+                            Yahoo
+                        </label>
+                    </div>
+
+                    <!-- Startpage -->
+                    <div class="search-engine-option-container" data-engine="startpage">
+                        <input type="radio" id="engine-startpage-default" name="search-engine-default" value="startpage" class="sr-only search-engine-radio">
+                        <label for="engine-startpage-default" class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">
+                            Startpage
+                        </label>
+                    </div>
+                </fieldset>
+                
+                <!-- Search Button -->
+                <button 
+                    class="w-full p-4 bg-blue-600 text-white text-lg font-semibold rounded-lg hover:bg-blue-500 transition-colors duration-200 search-button"
                 >
+                    Search
+                </button>
             </div>
+        </div>
+    </div>
 
-            <!-- Message Area -->
-            <div id="message-area" class="text-red-400 text-sm text-center hidden p-2 rounded-lg bg-red-900/20 border border-red-400/30">
-                <!-- Error messages will be shown here -->
+    <!-- Template for new search tabs. Note: This is not a real <template> tag, just a hidden div for cloning. -->
+    <div id="search-page-template" class="hidden">
+        <div class="search-ui-container bg-gray-800 p-8 rounded-xl shadow-2xl w-full max-w-lg border border-gray-700">
+            <!-- Header with Settings -->
+            <div class="flex justify-between items-center text-center mb-6">
+                <div class="w-8"></div>
+                <div class="flex-1">
+                    <h1 class="text-4xl font-bold text-blue-300 mb-2">Orbit</h1>
+                    <p class="text-lg text-gray-200">Search the web.</p>
+                </div>
+                <button title="Settings" class="text-gray-400 hover:text-white transition-colors w-8 settings-button-clone">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 0 1 1.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.108 1.204.165.397.505.71.93.78l.893.15c.543.09.94.56.94 1.11v1.093c0 .55-.397 1.02-.94 1.11l-.893.149c-.425.07-.765.383-.93.78-.165.398-.143.854.108 1.204l.527.738c.32.447.27.058-.12 1.45l-.774.773a1.125 1.125 0 0 1-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.108-.397.165-.71.505-.78.93l-.15.893c-.09.543-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.149-.894c-.07-.424-.384-.764-.78-.93-.398-.164-.855-.142-1.205.108l-.737.527a1.125 1.125 0 0 1-1.45-.12l-.773-.774a1.125 1.125 0 0 1-.12-1.45l.527-.737c.25-.35.272-.806.108-1.204-.165-.397-.505-.71-.93-.78l-.893-.15c-.543-.09-.94-.56-.94-1.11v-1.093c0-.55.397-1.02.94-1.11l.893-.149c.425-.07.765-.383.93-.78.165.398.143.854-.108-1.204l-.527-.738a1.125 1.125 0 0 1 .12-1.45l.773-.773a1.125 1.125 0 0 1 1.45-.12l.737.527c.35.25.806.272 1.203.108.397-.165.71-.505.78-.93l.15-.893Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
+                </button>
             </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="sr-only">Search</label>
+                    <input type="text" {{-- REMOVED STATIC PLACEHOLDER HERE --}}
+                           class="w-full p-4 bg-gray-700 text-white rounded-lg border border-gray-600 transition-all search-input">
+                </div>
+                <div class="text-red-400 text-sm text-center hidden p-2 rounded-lg bg-red-900/20 border border-red-400/30 message-area"></div>
+                
+                <!-- Search Engine Selector (ALL 8 Engines) - NOW IN 3-COLUMN GRID -->
+                <fieldset class="grid grid-cols-3 gap-2">
+                    <legend class="sr-only">Select a search engine</legend>
+                    
+                    <!-- Google -->
+                    <div class="search-engine-option-container" data-engine="google">
+                        <input type="radio" value="google" class="sr-only search-engine-radio" checked>
+                        <label class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">Google</label>
+                    </div>
+                    
+                    <!-- Bing -->
+                    <div class="search-engine-option-container" data-engine="bing">
+                        <input type="radio" value="bing" class="sr-only search-engine-radio">
+                        <label class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">Bing</label>
+                    </div>
+                    
+                    <!-- DuckDuckGo -->
+                    <div class="search-engine-option-container" data-engine="duckduckgo">
+                        <input type="radio" value="duckduckgo" class="sr-only search-engine-radio">
+                        <label class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">DuckDuckGo</label>
+                    </div>
+                    
+                    <!-- Brave -->
+                    <div class="search-engine-option-container" data-engine="brave">
+                        <input type="radio" value="brave" class="sr-only search-engine-radio">
+                        <label class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">Brave</label>
+                    </div>
+                    
+                    <!-- Ecosia -->
+                    <div class="search-engine-option-container" data-engine="ecosia">
+                        <input type="radio" value="ecosia" class="sr-only search-engine-radio">
+                        <label class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">Ecosia</label>
+                    </div>
+                    
+                    <!-- Qwant -->
+                    <div class="search-engine-option-container" data-engine="qwant">
+                        <input type="radio" value="qwant" class="sr-only search-engine-radio">
+                        <label class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">Qwant</label>
+                    </div>
 
-            <!-- Search Engine Selector -->
-            <fieldset class="grid grid-cols-3 gap-2">
-                <legend class="sr-only">Select a search engine</legend>
+                    <!-- Yahoo -->
+                    <div class="search-engine-option-container" data-engine="yahoo">
+                        <input type="radio" value="yahoo" class="sr-only search-engine-radio">
+                        <label class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">Yahoo</label>
+                    </div>
+                    
+                    <!-- Startpage -->
+                    <div class="search-engine-option-container" data-engine="startpage">
+                        <input type="radio" value="startpage" class="sr-only search-engine-radio">
+                        <label class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">Startpage</label>
+                    </div>
+                </fieldset>
+
+                <button class="w-full p-4 bg-blue-600 text-white text-lg font-semibold rounded-lg hover:bg-blue-500 transition-colors duration-200 search-button">
+                    Search
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+        <div class="bg-gray-800 p-8 rounded-xl shadow-2xl w-full max-w-md border border-gray-700 space-y-6">
+            <div class="flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-white">Settings</h2>
+                <button id="settings-close-button" class="text-gray-400 hover:text-white text-3xl p-1 leading-none transition-colors">&times;</button>
+            </div>
+            
+            <fieldset class="space-y-4">
+                <legend class="text-lg font-medium text-gray-200 mb-2">Experience Mode</legend>
                 <div>
-                    <input type="radio" id="engine-google" name="search-engine" value="google" class="sr-only search-engine-radio" checked>
-                    <label for="engine-google" class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">
-                        Google
+                    <input type="radio" id="mode-classic" name="browser-mode" value="classic" class="sr-only peer">
+                    <label for="mode-classic" class="block p-4 rounded-lg bg-gray-700 border border-gray-600 cursor-pointer peer-checked:bg-blue-600 peer-checked:border-blue-500">
+                        <span class="block text-md font-semibold text-white">Classic Mode</span>
+                        <span class="block text-sm text-gray-300">Opens search results in a new browser tab. (Default)</span>
                     </label>
                 </div>
                 <div>
-                    <input type="radio" id="engine-bing" name="search-engine" value="bing" class="sr-only search-engine-radio">
-                    <label for="engine-bing" class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">
-                        Bing
-                    </label>
-                </div>
-                <div>
-                    <input type="radio" id="engine-duckduckgo" name="search-engine" value="duckduckgo" class="sr-only search-engine-radio">
-                    <label for="engine-duckduckgo" class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">
-                        DuckDuckGo
-                    </label>
-                </div>
-                <div>
-                    <input type="radio" id="engine-brave" name="search-engine" value="brave" class="sr-only search-engine-radio">
-                    <label for="engine-brave" class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">
-                        Brave
-                    </label>
-                </div>
-                <div>
-                    <input type="radio" id="engine-ecosia" name="search-engine" value="ecosia" class="sr-only search-engine-radio">
-                    <label for="engine-ecosia" class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">
-                        Ecosia
-                    </label>
-                </div>
-                <div>
-                    <input type="radio" id="engine-qwant" name="search-engine" value="qwant" class="sr-only search-engine-radio">
-                    <label for="engine-qwant" class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">
-                        Qwant
+                    <input type="radio" id="mode-web-browser" name="browser-mode" value="web-browser" class="sr-only peer">
+                    <label for="mode-web-browser" class="block p-4 rounded-lg bg-gray-700 border border-gray-600 cursor-pointer peer-checked:bg-blue-600 peer-checked:border-blue-500">
+                        <span class="block text-md font-semibold text-white">Web Browser Mini</span>
+                        <span class="block text-sm text-gray-300">Loads search results in tabs inside the app. (Bing only)</span>
                     </label>
                 </div>
             </fieldset>
-            
-            <!-- Search Button -->
-            <button 
-                id="search-button"
-                class="w-full p-4 bg-blue-600 text-white text-lg font-semibold rounded-lg hover:bg-blue-500 focus-orbit transition-colors duration-200"
-            >
-                Search
+
+            <!-- Theme Selection is intentionally hidden and locked to Classic as requested -->
+            <fieldset class="space-y-4 hidden"> 
+                <legend class="text-lg font-medium text-gray-200 mb-2">Design and Theme</legend>
+                <div>
+                    <input type="radio" id="theme-classic" name="browser-theme" value="classic" class="sr-only peer" checked>
+                    <label for="theme-classic" class="block p-4 rounded-lg bg-gray-700 border border-gray-600 cursor-pointer peer-checked:bg-blue-600 peer-checked:border-blue-500">
+                        <span class="block text-md font-semibold text-white">Classic (Active)</span>
+                        <span class="block text-sm text-gray-300">Dark theme with blue accents.</span>
+                    </label>
+                </div>
+            </fieldset>
+
+            <button id="settings-save-button" class="w-full p-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-500 transition-colors">
+                Save & Close
             </button>
+        </div>
+    </div>
+    
+    <!-- Luna AI Floating Button (Bottom Right) -->
+    <button id="luna-ai-button" title="Open Luna AI" 
+            class="fixed bottom-4 right-4 z-40 py-3 px-4 bg-fuchsia-600 rounded-lg shadow-2xl transition-all hover:bg-fuchsia-500 transform hover:scale-110 flex flex-col items-center">
+        <!-- Icon: moon_stars (on top) -->
+        <span class="material-symbols-outlined text-white text-2xl">moon_stars</span>
+        <!-- Text: Luna (below icon) -->
+        <span class="text-xs font-semibold text-white mt-1">Luna</span>
+    </button>
+
+    <!-- Luna AI Chat Panel UI -->
+    <div id="luna-ai-panel" class="fixed right-0 top-0 h-full w-full sm:w-96 bg-gray-900 shadow-2xl z-50 transition-transform duration-300 transform translate-x-full flex flex-col border-l border-gray-700">
+        <!-- Header -->
+        <div class="flex items-center justify-between p-4 bg-gray-800 border-b border-gray-700 flex-shrink-0">
+            <h3 class="text-xl font-semibold text-fuchsia-400 flex items-center">
+                <span class="material-symbols-outlined mr-2 text-2xl">moon_stars</span>
+                Luna AI Assistant
+            </h3>
+            <button id="luna-ai-close-button" title="Close Luna AI" class="text-gray-300 hover:text-white transition-colors p-1 rounded-full hover:bg-gray-700">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Messages Area -->
+        <div id="luna-messages" class="flex-grow p-4 space-y-4 overflow-y-auto">
+            <!-- AI Welcome Message (The only starting message) -->
+            <div class="flex justify-start">
+                <div class="max-w-xs bg-fuchsia-900/50 p-3 rounded-xl rounded-bl-none text-sm shadow-lg text-gray-200">
+                    <p class="font-bold text-fuchsia-300 mb-1">Luna</p>
+                    <p>Hello! I'm Luna, your personal Orbit AI. I can help you summarize the current page, find related information, or answer any quick questions you have. How can I assist you?</p>
+                </div>
+            </div>
+            
+            <!-- Future messages will be added here -->
+            
+        </div>
+
+        <!-- Input Area -->
+        <div class="p-4 bg-gray-800 border-t border-gray-700 flex-shrink-0">
+            <div class="flex space-x-2">
+                <input id="luna-input" type="text" placeholder="Ask Luna anything..." 
+                       class="flex-grow p-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:ring-fuchsia-500 focus:border-fuchsia-500 transition-colors">
+                <button id="luna-send-button" title="Send Message" class="bg-fuchsia-600 hover:bg-fuchsia-500 text-white p-3 rounded-lg flex items-center justify-center transition-colors">
+                    <span class="material-symbols-outlined text-xl">send</span>
+                </button>
+            </div>
+            <p class="text-xs text-gray-400 mt-2">Luna operates on the Gemini API.</p>
         </div>
     </div>
 
-    <!-- Search History -->
-    <div class="w-full max-w-lg">
-        <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-semibold text-gray-200">Search History</h2>
-            <button id="clear-history" class="text-sm text-gray-300 hover:text-gray-200 focus-orbit rounded-md px-2 py-1">
-                Clear History
-            </button>
-        </div>
-        <div id="history-container" class="space-y-2">
-            <!-- History items will be injected here -->
-            <p id="no-history-message" class="text-gray-400 text-center">No searches yet.</p>
-        </div>
-    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const searchInput = document.getElementById('search-input');
-            const searchButton = document.getElementById('search-button'); 
-            const historyContainer = document.getElementById('history-container');
-            const noHistoryMessage = document.getElementById('no-history-message');
-            const clearHistoryButton = document.getElementById('clear-history');
-            const messageArea = document.getElementById('message-area');
+            const tabBar = document.getElementById('tab-bar');
+            const tabContentArea = document.getElementById('tab-content-area');
+            const defaultNewTabButton = document.getElementById('new-tab-button-default');
+            const addNewTabButton = document.getElementById('add-new-tab');
+            const searchPageTemplate = document.getElementById('search-page-template');
             
-            const HISTORY_KEY = 'orbitSearchHistory';
-            const MAX_HISTORY_ITEMS = 10;
+            // Settings Elements
+            const settingsButton = document.getElementById('settings-button');
+            const settingsModal = document.getElementById('settings-modal');
+            const settingsCloseButton = document.getElementById('settings-close-button');
+            const settingsSaveButton = document.getElementById('settings-save-button');
+            
+            // Luna AI Elements
+            const lunaAiButton = document.getElementById('luna-ai-button');
+            const lunaAiPanel = document.getElementById('luna-ai-panel');
+            const lunaAiCloseButton = document.getElementById('luna-ai-close-button');
+            const lunaSendButton = document.getElementById('luna-send-button'); 
+            const lunaInput = document.getElementById('luna-input'); 
+
+            let currentMode = 'classic'; // Default mode
+            const fixedTheme = 'classic'; // Theme is now fixed
 
             // --- SafeSearch Blocklist ---
-            // This is a small example list to show how the filter works.
-            // A real app would have a much larger list of words.
             const blockedWords = [
                 'filterme',
                 'blockthis',
@@ -143,183 +494,404 @@
                 // ... more words would be added here
             ];
 
-            /**
-             * Loads search history from localStorage and renders it.
-             */
-            function loadHistory() {
-                const history = getHistory();
-                renderHistory(history);
-            }
-
-            /**
-             * Retrieves and parses history from localStorage.
-             * @returns {string[]} An array of search queries.
-             */
-            function getHistory() {
-                const historyJson = localStorage.getItem(HISTORY_KEY);
-                return historyJson ? JSON.parse(historyJson) : [];
-            }
-
-            /**
-             * Renders the history items to the page.
-             * @param {string[]} history - An array of search queries.
-             */
-            function renderHistory(history) {
-                // Clear existing history items
-                historyContainer.innerHTML = ''; 
-
-                if (history.length === 0) {
-                    historyContainer.appendChild(noHistoryMessage);
-                } else {
-                    history.forEach(query => {
-                        const historyItem = document.createElement('button');
-                        historyItem.textContent = query;
-                        historyItem.className = "w-full text-left p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors focus-orbit";
-                        
-                        // Add click event to re-search
-                        historyItem.addEventListener('click', () => {
-                            searchInput.value = query;
-                            performSearch();
-                        });
-                        historyContainer.appendChild(historyItem);
-                    });
-                }
-            }
-
-            /**
-             * Saves a new search query to the history.
-             * @param {string} query - The search query to save.
-             */
-            function saveSearch(query) {
-                let history = getHistory();
-                
-                // Remove existing instance of the query to avoid duplicates
-                history = history.filter(item => item !== query);
-
-                // Add new query to the top
-                history.unshift(query);
-
-                // Limit history size
-                if (history.length > MAX_HISTORY_ITEMS) {
-                    history = history.slice(0, MAX_HISTORY_ITEMS);
-                }
-
-                // Save back to localStorage
-                localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
-
-                // Re-render the history list
-                renderHistory(history);
-            }
-
-            /**
-             * Clears all items from search history.
-             */
-            function clearHistory() {
-                localStorage.removeItem(HISTORY_KEY);
-                renderHistory([]);
-            }
-
-            /**
-             * Checks if the query contains any blocked words.
-             * @param {string} query - The search query to check.
-             * @returns {boolean} - True if a blocked word is found, false otherwise.
-             */
             function checkSafeSearch(query) {
                 const lowerCaseQuery = query.toLowerCase();
-                
                 for (const blockedWord of blockedWords) {
-                    // Check if the query contains the blocked word
                     if (lowerCaseQuery.includes(blockedWord)) {
-                        return true; // Found a blocked word
+                        return true; 
                     }
                 }
-                return false; // No blocked words found
+                return false; 
             }
 
-            /**
-             * Performs the search operation.
-             * It formats the query, opens a new search tab, and saves the search.
-             */
-            function performSearch() {
-                // 1. Get the raw query from the input and trim whitespace
-                const rawQuery = searchInput.value.trim();
+            // --- Settings Functions ---
 
-                // Clear any previous messages
+            function openSettings() {
+                settingsModal.classList.remove('hidden');
+            }
+
+            function closeSettings() {
+                settingsModal.classList.add('hidden');
+            }
+
+            function saveSettings() {
+                const selectedMode = document.querySelector('input[name="browser-mode"]:checked').value;
+                localStorage.setItem('orbit-mode', selectedMode);
+                applyMode(selectedMode);
+                
+                // Theme is fixed to 'classic'
+                closeSettings();
+            }
+
+            function applyMode(mode) {
+                currentMode = mode;
+                document.body.classList.toggle('classic-mode', mode === 'classic');
+                document.body.classList.toggle('web-browser-mode', mode === 'web-browser');
+
+                if (mode === 'web-browser') {
+                    // Activate the default tab
+                    activateTab('new-tab-page-default');
+                    // Force default tab's search engine to Bing
+                    const defaultBingRadio = document.getElementById('engine-bing-default');
+                    if (defaultBingRadio) {
+                        defaultBingRadio.checked = true;
+                    }
+                } else {
+                    // In classic mode, the default page is just... visible.
+                    activateTab(null); // Deactivate all
+                }
+            }
+
+            function applyTheme(theme) {
+                // Since only 'classic' is allowed, we just enforce the base styling
+                document.body.classList.remove('theme-classic', 'theme-focus', 'theme-modern');
+                document.body.classList.add(`theme-${theme}`);
+            }
+
+            function loadSettings() {
+                const savedMode = localStorage.getItem('orbit-mode') || 'classic';
+                const modeRadio = document.getElementById(`mode-${savedMode}`);
+                if (modeRadio) {
+                    modeRadio.checked = true;
+                }
+                applyMode(savedMode);
+
+                // Always apply the fixed 'classic' theme regardless of localStorage
+                applyTheme(fixedTheme);
+            }
+
+            // --- Tab Functions ---
+
+            function activateTab(tabId) {
+                // Deactivate all tabs
+                document.querySelectorAll('.tab-item').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                // Deactivate all panes
+                document.querySelectorAll('.tab-pane').forEach(pane => {
+                    pane.classList.remove('active');
+                });
+
+                if (!tabId) return; // Called with null to deactivate all
+
+                const tabButton = document.querySelector(`.tab-item[data-tab-id="${tabId}"]`);
+                if (tabButton) {
+                    tabButton.classList.add('active');
+                }
+                
+                const tabPane = document.getElementById(tabId);
+                if (tabPane) {
+                    tabPane.classList.add('active');
+                }
+            }
+
+            function createResultTab(query, url) {
+                const tabId = `tab-result-${Date.now()}`;
+                const tabButton = document.createElement('div');
+                tabButton.className = 'tab-item';
+                tabButton.dataset.tabId = tabId;
+                tabButton.innerHTML = `
+                    <span class="tab-title">${query}</span>
+                    <button class="close-tab" data-tab-id="${tabId}">&times;</button>
+                `;
+                
+                const tabPane = document.createElement('div');
+                tabPane.className = 'tab-pane';
+                tabPane.id = tabId;
+                tabPane.innerHTML = `<iframe src="${url}"></iframe>`;
+
+                tabBar.insertBefore(tabButton, addNewTabButton);
+                tabContentArea.appendChild(tabPane);
+                activateTab(tabId);
+
+                tabButton.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('close-tab')) return;
+                    activateTab(tabId);
+                });
+
+                tabButton.querySelector('.close-tab').addEventListener('click', () => {
+                    closeTab(tabId, 'new-tab-page-default');
+                });
+            }
+
+            function createSearchTab() {
+                if (currentMode !== 'web-browser') return; // Only in this mode
+
+                const tabId = `tab-search-${Date.now()}`;
+                const tabButton = document.createElement('div');
+                tabButton.className = 'tab-item';
+                tabButton.dataset.tabId = tabId;
+                tabButton.innerHTML = `
+                    <span class="tab-title">New Tab 🪐</span>
+                    <button class="close-tab" data-tab-id="${tabId}">&times;</button>
+                `;
+                
+                const tabPane = document.createElement('div');
+                tabPane.className = 'tab-pane flex flex-col items-center justify-center p-4';
+                tabPane.id = tabId;
+                // Clone the template's inner HTML
+                tabPane.innerHTML = searchPageTemplate.innerHTML;
+
+                tabBar.insertBefore(tabButton, addNewTabButton);
+                tabContentArea.appendChild(tabPane);
+
+                initSearchTab(tabPane, tabId);
+                activateTab(tabId);
+
+                tabButton.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('close-tab')) return;
+                    activateTab(tabId);
+                });
+
+                tabButton.querySelector('.close-tab').addEventListener('click', () => {
+                    closeTab(tabId, 'new-tab-page-default');
+                });
+            }
+
+            function closeTab(tabId, fallbackTabId) {
+                const tabButton = document.querySelector(`.tab-item[data-tab-id="${tabId}"]`);
+                const tabPane = document.getElementById(tabId);
+                if (tabButton) tabButton.remove();
+                if (tabPane) tabPane.remove();
+                
+                // Find the next active tab, prioritizing the fallback if it exists
+                let newActiveTabId = fallbackTabId;
+                if (!document.querySelector(`.tab-item[data-tab-id="${newActiveTabId}"]`)) {
+                    // Get the ID of the first remaining tab
+                    newActiveTabId = tabBar.querySelector('.tab-item')?.dataset.tabId;
+                }
+                
+                activateTab(newActiveTabId);
+            }
+
+            // --- Search Function ---
+
+            function performSearch(searchInput, messageArea, radioButtons) {
+                const rawQuery = searchInput.value.trim();
                 messageArea.textContent = '';
                 messageArea.classList.add('hidden');
 
-                // If the query is empty, do nothing
-                if (rawQuery === "") {
-                    return;
-                }
+                if (rawQuery === "") return;
 
-                // --- SafeSearch Check ---
                 if (checkSafeSearch(rawQuery)) {
                     messageArea.textContent = 'Your search contains words that are not allowed. Please try again.';
                     messageArea.classList.remove('hidden');
-                    return; // Stop the search
+                    return; 
                 }
-                // --- End SafeSearch Check ---
 
-                // 2. Format the query: replace all spaces with '+'
                 const formattedQuery = rawQuery.split(' ').join('+');
+                let selectedEngineValue = 'google'; // Default
+                radioButtons.forEach(radio => {
+                    if (radio.checked) {
+                        selectedEngineValue = radio.value;
+                    }
+                });
 
-                // 3. Get the selected search engine
-                const selectedEngine = document.querySelector('input[name="search-engine"]:checked').value;
                 let searchUrl = '';
-
-                // 4. Build the final search URL based on the engine
-                switch (selectedEngine) {
-                    case 'bing':
-                        searchUrl = `https://www.bing.com/search?q=${formattedQuery}`;
-                        break;
-                    case 'duckduckgo':
-                        searchUrl = `https://duckduckgo.com/?q=${formattedQuery}`;
-                        break;
-                    case 'brave':
-                        searchUrl = `https://search.brave.com/search?q=${formattedQuery}`;
-                        break;
-                    case 'ecosia':
-                        searchUrl = `https://www.ecosia.org/search?q=${formattedQuery}`;
-                        break;
-                    case 'qwant':
-                        searchUrl = `https://www.qwant.com/?q=${formattedQuery}`;
-                        break;
-                    case 'google':
-                    default:
-                        searchUrl = `https://www.google.com/search?q=${formattedQuery}`;
-                        break;
+                switch (selectedEngineValue) {
+                    case 'bing': searchUrl = `https://www.bing.com/search?q=${formattedQuery}`; break;
+                    case 'duckduckgo': searchUrl = `https://duckduckgo.com/?q=${formattedQuery}`; break;
+                    case 'brave': searchUrl = `https://search.brave.com/search?q=${formattedQuery}`; break;
+                    case 'ecosia': searchUrl = `https://www.ecosia.org/search?q=${formattedQuery}`; break;
+                    case 'qwant': searchUrl = `https://www.qwant.com/?q=${formattedQuery}`; break;
+                    case 'yahoo': searchUrl = `https://search.yahoo.com/search?p=${formattedQuery}`; break;
+                    case 'startpage': searchUrl = `https://www.startpage.com/search?q=${formattedQuery}`; break;
+                    case 'google': default: searchUrl = `https://www.google.com/search?q=${formattedQuery}`; break;
                 }
 
-                // 5. Open the search URL in a new browser tab
-                window.open(searchUrl, '_blank');
+                // --- MODE-BASED ACTION ---
+                if (currentMode === 'classic') {
+                    // Classic Mode: Open in new browser tab
+                    window.open(searchUrl, '_blank');
+                } else {
+                    // Web Browser Mini: Open in-app tab
+                    createResultTab(rawQuery, searchUrl);
+                }
                 
-                // 6. Save the search to history
-                saveSearch(rawQuery);
+                searchInput.value = '';
+            }
+            
+            // --- Luna AI Typing Function ---
+
+            /**
+             * Animates text into a target DOM element letter by letter.
+             * @param {HTMLElement} element - The target element to write into.
+             * @param {string} text - The message to type.
+             * @param {number} [delay=50] - Delay in milliseconds per character.
+             */
+            function typeMessage(element, text, delay = 50) {
+                let i = 0;
+                element.textContent = ''; // Clear existing content
+                const messagesArea = document.getElementById('luna-messages');
+                
+                const interval = setInterval(() => {
+                    if (i < text.length) {
+                        element.textContent += text.charAt(i);
+                        i++;
+                        // Scroll to bottom every few characters for a smoother effect
+                        if (i % 3 === 0) {
+                            messagesArea.scrollTop = messagesArea.scrollHeight;
+                        }
+                    } else {
+                        clearInterval(interval);
+                        // Ensure final scroll to the bottom
+                        messagesArea.scrollTop = messagesArea.scrollHeight;
+                    }
+                }, delay);
             }
 
-            // --- Event Listeners ---
+            // --- Luna AI Functions ---
 
-            // Search button click
-            searchButton.addEventListener('click', performSearch);
+            function toggleLunaAI() {
+                const isOpen = lunaAiPanel.classList.toggle('translate-x-full');
+                lunaAiButton.classList.toggle('hidden', !isOpen); // Show button when panel is closed
+            }
 
-            // 'Enter' key in input field
-            searchInput.addEventListener('keydown', (event) => {
-                if (event.key === 'Enter') {
-                    performSearch();
+            function handleLunaSend() {
+                const message = lunaInput.value.trim();
+                if (message === '') return;
+
+                const messagesArea = document.getElementById('luna-messages');
+
+                // 1. Display User Message
+                const userBubble = document.createElement('div');
+                userBubble.className = 'flex justify-end';
+                userBubble.innerHTML = `
+                    <div class="max-w-xs bg-blue-600 p-3 rounded-xl rounded-br-none text-sm text-white shadow-lg">
+                        <p>${message}</p>
+                    </div>
+                `;
+                messagesArea.appendChild(userBubble);
+                
+                lunaInput.value = '';
+
+                // 2. Setup Luna's Response Bubble
+                const lunaResponse = "I'm working on learning how to understand humans, come back soon.";
+
+                const lunaBubble = document.createElement('div');
+                lunaBubble.className = 'flex justify-start';
+                // Use a unique ID for the typing target to ensure the function writes to the right element
+                const typingTargetId = `luna-typing-${Date.now()}`; 
+                lunaBubble.innerHTML = `
+                    <div class="max-w-xs bg-fuchsia-900/50 p-3 rounded-xl rounded-bl-none text-sm shadow-lg text-gray-200">
+                        <p class="font-bold text-fuchsia-300 mb-1">Luna</p>
+                        <p id="${typingTargetId}"></p> 
+                    </div>
+                `;
+                messagesArea.appendChild(lunaBubble);
+
+                const typingTarget = document.getElementById(typingTargetId);
+                
+                // 3. Start the typing animation
+                typeMessage(typingTarget, lunaResponse);
+
+                // Initial scroll to the bottom after user message is posted
+                messagesArea.scrollTop = messagesArea.scrollHeight;
+            }
+
+
+            // --- Initialization ---
+
+            function initSearchTab(pane, tabId) {
+                const searchInput = pane.querySelector('.search-input');
+                const searchButton = pane.querySelector('.search-button'); 
+                const messageArea = pane.querySelector('.message-area');
+                const radioButtons = pane.querySelectorAll('.search-engine-radio');
+                const settingsButtonClone = pane.querySelector('.settings-button-clone');
+
+                // Make radio buttons unique (for search pane clones)
+                radioButtons.forEach((radio) => {
+                    const newId = `engine-${radio.value}-${tabId}`;
+                    radio.id = newId;
+                    radio.name = `search-engine-${tabId}`; 
+                    // Update the 'for' attribute of the related label
+                    const visibleLabel = radio.nextElementSibling;
+                    if (visibleLabel) {
+                        visibleLabel.setAttribute('for', newId);
+                    }
+                });
+                
+                // In web-browser mode, force Bing
+                if (currentMode === 'web-browser') {
+                    const bingRadio = pane.querySelector('input[value="bing"]');
+                    if(bingRadio) bingRadio.checked = true;
+                }
+                
+                // Add search listeners
+                searchButton.addEventListener('click', () => {
+                    performSearch(searchInput, messageArea, radioButtons);
+                });
+                searchInput.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter') {
+                        performSearch(searchInput, messageArea, radioButtons);
+                    }
+                });
+
+                // Add settings listener to cloned button
+                if (settingsButtonClone) {
+                    settingsButtonClone.addEventListener('click', openSettings);
+                }
+            }
+            
+            // --- NEW PLACEHOLDER CYCLING LOGIC ---
+            const placeholders = [
+                "What is the capital of Canada?",
+                "How many days until halloween?",
+                "Google Calendar",
+                "Why is ChromeOS so lightweight?",
+                "Search for anything, the web is at your fingertips"
+            ];
+            let currentIndex = 0;
+
+            function cyclePlaceholder() {
+                const nextPlaceholder = placeholders[currentIndex];
+
+                // Target all search inputs (default and cloned)
+                document.querySelectorAll('.search-input').forEach(input => {
+                    input.placeholder = nextPlaceholder;
+                });
+
+                currentIndex = (currentIndex + 1) % placeholders.length;
+            }
+
+            // Start immediately and then repeat every 3 seconds (3000ms)
+            cyclePlaceholder(); 
+            setInterval(cyclePlaceholder, 3000);
+            // --- END NEW LOGIC ---
+
+            // --- Initial Setup and Event Attachments ---
+
+            // Load settings on start
+            loadSettings();
+
+            // Initialize the default search tab
+            initSearchTab(document.getElementById('new-tab-page-default'), 'default');
+
+            // "New Tab" (default) button click
+            defaultNewTabButton.addEventListener('click', () => {
+                activateTab('new-tab-page-default');
+            });
+
+            // "+" button click
+            addNewTabButton.addEventListener('click', createSearchTab);
+
+            // Settings button listeners
+            settingsButton.addEventListener('click', openSettings);
+            settingsCloseButton.addEventListener('click', closeSettings);
+            settingsSaveButton.addEventListener('click', saveSettings);
+            
+            // Luna AI button listeners
+            lunaAiButton.addEventListener('click', toggleLunaAI);
+            lunaAiCloseButton.addEventListener('click', toggleLunaAI);
+            lunaSendButton.addEventListener('click', handleLunaSend);
+            lunaInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    handleLunaSend();
                 }
             });
 
-            // Clear history button click
-            clearHistoryButton.addEventListener('click', clearHistory);
-
-            // Initial load of history on page start
-            loadHistory();
         });
     </script>
 
 </body>
 </html>
-
-
-
