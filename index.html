@@ -4,894 +4,1178 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orbit Search Browser</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪐</text></svg>">
-    <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Material Symbols Outlined for Luna AI Icon -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
-    <!-- Use Inter font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+    <!-- --- ICON DEFINITIONS FOR BROWSER TAB AND CHROMEOS SHORTCUT --- -->
+    
+    <!-- Favicon for browser tab -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪐</text></svg>">
+    
+    <!-- Apple Touch Icon (Used by ChromeOS/Android/iOS for home screen) -->
+    <link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAMAAABswYX9AAAAnFBMVEUAAAAA/wAAfwAA/wBv7gC/3gDP/wBv7wCfxQDv9gBv/wCv/wDP9gC/9gD//wD3/wDv7wDP7wD///8A/wAA/wDP/wAAAAAA//8A/wAA/wD33wAA/wBv9wD/9wAA//8vAACfxQDv/wDP3wD3/wD37wAAvwD/7gBv/wDP/wDv/wD3/wAA/wD/3wAA7wAA/wAA/wAA/wAAvwDP9wD39wBv/wD/7wD/7wD39wAAvwAA/wDv7gAA/wA/v9AAAAAHDH39AAAALd0Uk5TAD8/TFBfX2BxcnN3f4CAgoOEhIWGh4mKjIyNjo+QkJOUlpaYmZyfoKChqKu0tbe5vLy+vsDBwsLDxMXGxsjKy83Ozs/Q0NHS09TV1tfY2drb3N3e3+Dg4uPk5ebn6Ojp6uxtr7S2uby9wMXGxsnKy8zNzs7Q0NHS1Nna3t7h4uPk5ebn6erq7e7v8PHy8/T19fb3+Pj5+vv8/f7+/v8+QEFERVJTVlheY2ZpbGxuaWlubm5ubnQzXnQAAAXCSur39AAAALd0Uk5TAD8/TFBfX2BxcnN3f4CAgoOEhIWGh4mKjIyNjo+QkJOUlpaYmZyfoKChqKu0tbe5vLy+vsDBwsLDxMXGxsnKy83Ozs/Q0NHS09TV1tfY2drb3N3e3+Dg4uPk5ebn6Ojp6uxtr7S2uby9wMXGxsnKy8zNzs7Q0NHS1Nna3t7h4uPk5ebn6erq7e7v8PHy8/T19fb3+Pj5+vv8/f7+/v8+QEFERVJTVlheY2ZpbGxuaWlubm5ubnQzXnQAAAYFSURBVHja7dwJc9pAFIZhdS9kH8hK4wP9oK1/E3Jd13a9l/t4l92+jLh9bA4Xg0FmE9e0mN66q7I4q2p3R82+t3t0/d59r98nJk+eYj7fTj3+gQ3xO987T3d3QW/36j9Y831k7vO88XzG4+8Qj78gE2bMmjR5ys75M2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2VryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZM2bNmjVryszZMy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLyEwCBFiB93MAYDMIGAwCDEBgAOizg8EEYGAAAACQVU5ErkJggg==">
+
+    <!-- 2. Web App Manifest (provides info for PWA/shortcuts) -->
+    <link rel="manifest" href="data:application/json;base64,ewogICAgIm5hbWUiOiAiT3JiaXQgQnJvd3NlciIsCiAgICAic2hvcnRfbmFtZSI6ICJPcmJpdCIsCiAgICAiZGVzY3JpcHRpb24iOiAiQSBzZWN1cmUgYW5kIHByaXZhdGUgYnJvd3NlciBleHBlcmllbmNlLiIsCiAgICAic3RhcnRfdXJsIjogIi4iLAogICAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgICAiYmFja2dyb3VuZF9jb2xvciI6ICIjMWExYTFhIiwKICAgICJ0aGVtZV9jb2xvciI6ICIjMWExYTFhIiwKICAgICJpY29ucyI6IFsKICAgICAgIHsKICAgICAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9wbmc7YmFzZTY0LGlWQk9SdzBLR2dvQUFBQU5TVWhFVWdBQUFDQUFBQUFnQ0FNQUFBQnZ3ZzBUQUFBQUJnbEJnbGtCZ2dEQUFBQllBTUFBQURVNmVWWlFBQUFBQUFBQUFBQUFBUXdBQUFBQVJZQ0FVUllBQUFCR0JBQUFBQkFBRVNJUWdBQUFBQUFBQUFBQUFVQ0FnQUFBQUFBRUFBQUFnQUF3QUFBQUFBRkFBUUFBREFBQUFBTEFBQUFBR0FBQUFBQUFBQUFBQzREQUFBQUFBQVFBQUFBQUFBR1JBQUFBQUFBQUFBQUFBQVFBQUFBQUFBQUFBQUFBR1lBQUFBQVFBQUFBQUFBQUFCQUFBSDBlQUFCWGdBQUE4RkFBQUFCSlVGRUJrSmdVQVFBQUFBQUFBQUFVU3UzUlRkWE02S043bkI3RzdiZ3htQUFBQUFkRlJTVW9SSUVGQlNnQURxVlVUkFzU0NrbFRRQUFBQUFGQlRVTGtRQUFBQUFBQUFBQUFBQUpZQUFBQUFBQUFBQUFBQUNRQUFBQUFBQUFBQUFBQUFBQUNBQWdBQUFBQUFBQUFBQUFBQUFBQUFad0FBQUFBQUFBQUFBQUFBQUFBTzBBQUFBQUFBQUFBQUFBQUFBQUFBQUFBRUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFHQmNmL2tBQkFBTUFsUVlYdkFRQUEvQUFBQ0YwVEFmZ0FBQUFBUUFBQUEwRkFBQUFBQVFBQUFBQUFBQUFBQUFBQUFBQVFBQWlBQUFBQUFBQUFBQUFBQUFBQUFHMEFBQUFBQUFBQUFBQUFBQUFBRzBCb1VBQXdDQUFBQUFBZ0FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBSUVORFJCR2dnZyIsCiAgICAgICAgInNpemVzIjogIjE5MngxOTIiLAogICAgICAgICJ0eXBlIjogImltYWdlL3BuZyIKICAgICAgfSwKICAgICAgIHsKICAgICAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9wbmc7YmFzZTY0LGlWQk9SdzBLR2dvQUFBQU5TVWhFVWdBQUEzQUFBQUNBQVk0QUFCeFVZWWdEQUFBQVZBQUFBZ0pQWFBCQUFBQUFBQUFBQkFBUWdBQUFBQUFBQUFBQUFBQUNBRUFBQUFBQUFBQUFBQUFBQUFBZ0FBQUFBQUFBQUFBQUFBQUFBQVFBQUFBQUFBQUFBQUFBQUFBQkFBT0VBQUJYb3dBQUF5SVBBQUFCZ0pPUEFsSUFBQUNBQUFBQUFBQUFBQVNBQUFBQVV3QUFBQUFBQUFBNkFBQUFDRXdBQUFBQUFBQUFOc0FBQUFBQUFBQUFBQUFBRTBBQUFBQUFBQUFBQUFBQUFBQUFBQUFBSUFBREVBQUFBQUFBQUFBQUFBQUFBQUFnQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBRG0wekF0UUVBUmdBQUFBMEtBQWdFQUFBQVlBQVFBQUFBQkFCVURtQUFBYWNBQUFBYmNBQUE0QUFLQlVvQUFBQmlKUlVGVFUxaEVBUUFBQUFBQUFBQUFLSlJBRERBQWdJQUFBQUFBZ0VBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUVQL0FBQUFBQUFBQUFBQUFBRkF1QUFBQUFBQUFBQUFBQUJBTmNBQUFBQUFBQUFBQUFBQUFBQmxWckFBRXhBQUFBRkpSRWhyRVNBZ0FBQUE9IiwKICAgICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIgogICAgfQogICAgXQp9">
+
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
+        :root {
+            --bg-color-classic: #1a1a1a;
+            --container-color-classic: #2b2b2b;
+            --text-color-classic: #e0e0e0;
+            --accent-color-classic: #3b82f6; /* blue-500 */
+            --accent-hover-classic: #2563eb; /* blue-600 */
+            --border-color-classic: #374151; /* gray-700 */
+        }
+
+        html, body {
+            height: 100%;
             overflow: hidden; /* Prevent body scroll */
         }
-        /* Focus Indicator Subtlety: Keeps basic accessibility while removing aggressive focus rings. */
-        .search-input:focus, .search-button:focus, button:focus, select:focus {
-            outline: none; 
-            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1); 
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            /* Animated Gradient Background - Default */
+            background: linear-gradient(-45deg, #1a1a1a, #232323, #1a1a1a, #111111);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-color-classic);
         }
 
-        /* Custom radio button styles */
-        .search-engine-radio:checked + label {
-            background-color: #2563eb; /* blue-600 */
-            border-color: #3b82f6; /* blue-500 */
-            color: white;
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        /* --- Tab Styles --- */
-        .tab-bar {
-            display: flex;
-            background-color: #1f2937; /* gray-800 */
-            padding: 4px 4px 0 4px;
-            border-bottom: 1px solid #374151; /* gray-700 */
-            flex-shrink: 0; 
+        /* --- THEME DEFINITIONS --- */
+        body.theme-classic {
+            background: linear-gradient(-45deg, #1a1a1a, #232323, #1a1a1a, #111111);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-color-classic);
         }
-        .tab-item {
-            display: flex;
-            align-items: center;
-            padding: 8px 12px;
-            background-color: #374151; /* gray-700 */
-            border-top-left-radius: 6px;
-            border-top-right-radius: 6px;
-            cursor: pointer;
-            margin-right: 2px;
-            border: 1px solid transparent;
-            border-bottom: none;
-            max-width: 200px;
+        
+        /* === PRIVACY+ MODE OVERRIDE === */
+        body.mode-privacy-plus {
+            background: #000000 !important; /* Fully black background */
+            background-size: auto !important;
+            animation: none !important;
         }
-        .tab-item.active {
-            background-color: #111827; /* gray-900 */
-            border-color: #4b5563; /* gray-600 */
-            position: relative;
-            z-index: 10;
-        }
-        .tab-item:not(.active):hover {
-            background-color: #4b5563; /* gray-600 */
-        }
-        .tab-title {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            margin-right: 8px;
-            font-size: 0.875rem;
-        }
-        .close-tab {
-            font-size: 1rem;
-            line-height: 1;
-            padding: 2px;
-            border-radius: 50%;
-            background-color: transparent;
-            color: #d1d5db; /* gray-300 */
-        }
-        .close-tab:hover {
-            background-color: #4b5563; /* gray-600 */
-            color: white;
-        }
-        .tab-content-area {
-            flex-grow: 1; /* Allows it to take up all remaining vertical space */
-            position: relative; 
-        }
-        .tab-pane {
-            display: none; 
+
+        .theme-classic .container-bg { background-color: var(--container-color-classic); }
+        .theme-classic .text-color { color: var(--text-color-classic); }
+        .theme-classic .border-color { border-color: var(--border-color-classic); }
+        .theme-classic .accent-bg { background-color: var(--accent-color-classic); }
+        .theme-classic .accent-bg-hover:hover { background-color: var(--accent-hover-classic); }
+        .theme-classic .accent-text { color: var(--accent-color-classic); }
+        .theme-classic .accent-border-focus:focus-within { border-color: var(--accent-color-classic); }
+        .theme-classic .placeholder-color::placeholder { color: #6b7280; }
+        .theme-classic .tab-active { background-color: #374151; color: white; }
+        .theme-classic .tab-inactive { background-color: #1f2937; color: #9ca3af; }
+        .theme-classic .tab-inactive:hover { background-color: #4b5563; }
+        .theme-classic .modal-bg { background-color: var(--container-color-classic); }
+        .theme-classic .radio-label { background-color: #374151; border-color: #4b5563; }
+        .theme-classic .radio-label-checked { background-color: var(--accent-color-classic); border-color: var(--accent-hover-classic); }
+        .theme-classic .toggle-label { background-color: #4b5563; }
+        .theme-classic .toggle-checkbox:checked + .toggle-label { background-color: var(--accent-color-classic); }
+        .theme-classic .luna-sidebar { background-color: #1f2937; border-left-color: #374151; }
+        .theme-classic .luna-bubble-user { background-color: var(--accent-color-classic); }
+        .theme-classic .luna-bubble-ai { background-color: #374151; }
+        .theme-classic .engine-grid-item { background-color: #374151; }
+        .theme-classic .engine-grid-item:hover { background-color: #4b5563; }
+        .theme-classic .engine-grid-item.selected { background-color: var(--accent-color-classic); }
+
+        /* Style for the iframe to ensure it fills the available space */
+        .iframe-container {
+            flex-grow: 1; /* Allow iframe container to grow */
             height: 100%;
             width: 100%;
-            background-color: #111827; /* gray-900 */
-            overflow: auto;
-            position: absolute; 
-            top: 0;
-            left: 0;
         }
-        .tab-pane.active {
-            display: block; 
-            z-index: 5; 
-        }
-        .tab-pane iframe {
-            width: 100%;
+        
+        iframe {
             height: 100%;
+            width: 100%;
             border: none;
-            background-color: #fff; 
+            background-color: #fff; /* White background for loading */
         }
 
-        /* --- Mode Switching Styles --- */
-
-        /* Classic Mode (Default) */
-        body.classic-mode #tab-bar { display: none; }
-        body.classic-mode #tab-content-area { display: none; }
-        body.classic-mode #new-tab-page-default {
-            display: flex; 
-            position: relative; 
-            height: 100vh; 
+        /* We use flex-grow on the content areas to fill available space */
+        #tab-content {
             flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* Prevent scrolling on the main container */
+        }
+        
+        .new-tab-page {
+            flex-grow: 1; /* Make new tab page fill remaining space */
         }
 
-        /* Web Browser Mini Mode */
-        body.web-browser-mode #tab-bar { display: flex; }
-        body.web-browser-mode #tab-content-area { display: block; }
-        body.web-browser-mode #new-tab-page-default {
-            display: none; 
-            position: absolute; 
-            height: 100%;
+        /* Hide tabs/navbar in classic and privacy modes */
+        body.mode-classic #tab-bar,
+        body.mode-classic #navbar,
+        body.mode-privacy-plus #tab-bar,
+        body.mode-privacy-plus #navbar {
+            display: none;
         }
-        body.web-browser-mode #new-tab-page-default.active {
-            display: flex; 
+        
+        /* Ensure in classic/privacy mode the search page takes full height */
+        body.mode-classic #app-container,
+        body.mode-privacy-plus #app-container {
+            height: 100vh;
         }
-
-        /* Web Browser Mini - Only show Bing radio button when in Web Browser Mini mode */
-        body.web-browser-mode .search-engine-option-container:not([data-engine="bing"]) {
+        
+        /* Show tabs/navbar in web-browser mode */
+        body.mode-web-browser #tab-bar {
+            display: flex;
+        }
+        body.mode-web-browser #navbar {
+            display: flex;
+        }
+        body.mode-web-browser #app-container {
+            height: 100vh;
+        }
+        
+        /* Hide all engines by default inside the grid */
+        .engine-button {
             display: none;
         }
 
+        /* Show all engines in classic mode */
+        body.mode-classic .engine-button {
+            display: flex;
+        }
+
+        /* Privacy+ Mode - Only show Startpage button */
+        body.mode-privacy-plus .engine-button[data-engine="startpage"] {
+            display: flex;
+        }
+        
+        /* Web Browser Mini - Only show Bing button */
+        body.mode-web-browser .engine-button[data-engine="bing"] {
+            display: flex;
+        }
+
         /* Luna AI Panel Visibility */
+        #luna-ai-panel {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(100%);
+        }
         #luna-ai-panel.open {
             transform: translateX(0);
         }
 
+        /* Simple toggle switch */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: var(--accent-color-classic);
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: var(--accent-color-classic);
+        }
+        
     </style>
 </head>
-<!-- The body is set to flex column and takes min-h-screen to ensure full viewport use -->
-<body class="bg-gray-900 text-white min-h-screen flex flex-col classic-mode"> 
+<body class="theme-classic">
 
-    <!-- Tab Bar -->
-    <div id="tab-bar" class="tab-bar">
-        <!-- New Tab (Default) -->
-        <div id="new-tab-button-default" class="tab-item active" data-tab-id="new-tab-page-default">
-            <span class="tab-title">New Tab 🪐</span>
-            <!-- No close button for the main tab -->
+    <div id="app-container" class="flex flex-col h-screen max-h-screen">
+
+        <!-- Tab Bar (Hidden in Classic/Privacy+ Mode by default) -->
+        <div id="tab-bar" class="w-full bg-gray-900 border-b border-gray-700 flex items-center space-x-1 p-1">
+            <div id="tabs-container" class="flex-grow flex space-x-1 overflow-x-auto">
+                <!-- Tabs will be dynamically inserted here -->
+            </div>
+            <button id="add-tab-button" class="flex-shrink-0 p-2 text-gray-400 hover:bg-gray-700 rounded-md">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+            </button>
         </div>
-        <!-- Search tabs will be added here -->
-        <button id="add-new-tab" title="New search tab" class="tab-item" style="padding: 8px 10px; background-color: #374151; border-radius: 6px; margin-left: 4px; font-size: 1.2rem; line-height: 1; border-color: #4b5563;">
-            +
-        </button>
-    </div>
 
-    <!-- Tab Content Area (for iframes and search UIs) -->
-    <div id="tab-content-area" class="tab-content-area">
-        <!-- iframe panes will be added here -->
-    </div>
+        <!-- Tab Content Area -->
+        <div id="tab-content" class="w-full h-full relative flex-grow">
+            <!-- Iframes and New Tab Page will be dynamically shown/hidden here -->
+            <!-- The first "New Tab" page will be created here by JS on load -->
+        </div>
 
-    <!-- New Tab Page Content (The Search UI) -->
-    <div id="new-tab-page-default" class="tab-pane active flex flex-col items-center justify-center p-4">
-        <!-- This content will be cloned -->
-        <div class="search-ui-container bg-gray-800 p-8 rounded-xl shadow-2xl w-full max-w-lg border border-gray-700">
-            
+        <!-- Luna AI Chat Panel (Hidden by default) -->
+        <div id="luna-ai-panel" class="luna-sidebar fixed top-0 right-0 h-full w-full max-w-md bg-gray-800 border-l border-gray-700 z-50 flex flex-col transform translate-x-full transition-transform duration-300 ease-in-out">
             <!-- Header -->
-            <div class="flex justify-between items-center text-center mb-6">
-                <!-- Spacer -->
-                <div class="w-8"></div>
-                <!-- Title -->
-                <div class="flex-1">
-                    <h1 class="text-4xl font-bold text-blue-300 mb-2">Orbit</h1>
-                    <p class="text-lg text-gray-200">Search the web.</p>
+            <div class="flex items-center justify-between p-4 border-b border-gray-700 flex-shrink-0">
+                <div class="flex items-center space-x-2">
+                    <span class="material-symbols-outlined text-blue-400 text-2xl">moon_stars</span>
+                    <h2 class="text-lg font-semibold text-white">Luna AI</h2>
                 </div>
-                <!-- Settings Button -->
-                <button id="settings-button" title="Settings" class="text-gray-400 hover:text-white transition-colors w-8">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 0 1 1.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.108 1.204.165.397.505.71.93.78l.893.15c.543.09.94.56.94 1.11v1.093c0 .55-.397 1.02-.94 1.11l-.893.149c-.425.07-.765.383-.93.78-.165.398-.143.854.108 1.204l.527.738c.32.447.27.058-.12 1.45l-.774.773a1.125 1.125 0 0 1-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.108-.397.165-.71.505-.78.93l-.15.893c-.09.543-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.149-.894c-.07-.424-.384-.764-.78-.93-.398-.164-.855-.142-1.205.108l-.737.527a1.125 1.125 0 0 1-1.45-.12l-.773-.774a1.125 1.125 0 0 1-.12-1.45l.527-.737c.25-.35.272-.806.108-1.204-.165-.397-.505-.71-.93-.78l-.893-.15c-.543-.09-.94-.56-.94-1.11v-1.093c0-.55.397-1.02.94-1.11l.893-.149c.425-.07.765-.383.93-.78.165.398.143.854-.108-1.204l-.527-.738a1.125 1.125 0 0 1 .12-1.45l.773-.773a1.125 1.125 0 0 1 1.45-.12l.737.527c.35.25.806.272 1.203.108.397-.165.71-.505.78-.93l.15-.893Z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                    </svg>
+                <button id="luna-close-button" class="text-gray-400 hover:text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
-
-            <!-- Search Form -->
-            <div class="space-y-4">
-                <!-- Input Field -->
-                <div>
-                    <label for="search-input-default" class="sr-only">Search</label>
-                    <input 
-                        type="text" 
-                        id="search-input-default"
-                        {{-- REMOVED STATIC PLACEHOLDER HERE --}}
-                        class="w-full p-4 bg-gray-700 text-white rounded-lg border border-gray-600 transition-all search-input"
-                    >
+            
+            <!-- Chat Area -->
+            <div id="luna-chat-messages" class="flex-grow p-4 space-y-4 overflow-y-auto">
+                <!-- Initial Message -->
+                <div class="flex">
+                    <div class="luna-bubble-ai text-white p-3 rounded-lg rounded-bl-none max-w-xs">
+                        <p>Hi! I'm Luna. Ask me anything, or just say hello!</p>
+                    </div>
                 </div>
+            </div>
 
-                <!-- Message Area -->
-                <div class="text-red-400 text-sm text-center hidden p-2 rounded-lg bg-red-900/20 border border-red-400/30 message-area">
-                    <!-- Error messages will be shown here -->
+            <!-- Input Area -->
+            <div class="p-4 border-t border-gray-700 flex-shrink-0">
+                <div class="flex items-center space-x-2">
+                    <input type="text" id="luna-input" class="flex-grow p-2 rounded-lg border border-gray-600 bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Type your message...">
+                    <button id="luna-send-button" class="p-2 rounded-lg accent-bg accent-bg-hover text-white">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd"></path></svg>
+                    </button>
                 </div>
-
-                <!-- Search Engine Selector (ALL 8 Engines) - NOW IN 3-COLUMN GRID -->
-                <fieldset class="grid grid-cols-3 gap-2">
-                    <legend class="sr-only">Select a search engine</legend>
-                    
-                    <!-- Google -->
-                    <div class="search-engine-option-container" data-engine="google">
-                        <input type="radio" id="engine-google-default" name="search-engine-default" value="google" class="sr-only search-engine-radio" checked>
-                        <label for="engine-google-default" class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">
-                            Google
-                        </label>
-                    </div>
-                    
-                    <!-- Bing -->
-                    <div class="search-engine-option-container" data-engine="bing">
-                        <input type="radio" id="engine-bing-default" name="search-engine-default" value="bing" class="sr-only search-engine-radio">
-                        <label for="engine-bing-default" class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">
-                            Bing
-                        </label>
-                    </div>
-                    
-                    <!-- DuckDuckGo -->
-                    <div class="search-engine-option-container" data-engine="duckduckgo">
-                        <input type="radio" id="engine-duckduckgo-default" name="search-engine-default" value="duckduckgo" class="sr-only search-engine-radio">
-                        <label for="engine-duckduckgo-default" class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">
-                            DuckDuckGo
-                        </label>
-                    </div>
-                    
-                    <!-- Brave -->
-                    <div class="search-engine-option-container" data-engine="brave">
-                        <input type="radio" id="engine-brave-default" name="search-engine-default" value="brave" class="sr-only search-engine-radio">
-                        <label for="engine-brave-default" class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">
-                            Brave
-                        </label>
-                    </div>
-                    
-                    <!-- Ecosia -->
-                    <div class="search-engine-option-container" data-engine="ecosia">
-                        <input type="radio" id="engine-ecosia-default" name="search-engine-default" value="ecosia" class="sr-only search-engine-radio">
-                        <label for="engine-ecosia-default" class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">
-                            Ecosia
-                        </label>
-                    </div>
-                    
-                    <!-- Qwant -->
-                    <div class="search-engine-option-container" data-engine="qwant">
-                        <input type="radio" id="engine-qwant-default" name="search-engine-default" value="qwant" class="sr-only search-engine-radio">
-                        <label for="engine-qwant-default" class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">
-                            Qwant
-                        </label>
-                    </div>
-
-                    <!-- Yahoo -->
-                    <div class="search-engine-option-container" data-engine="yahoo">
-                        <input type="radio" id="engine-yahoo-default" name="search-engine-default" value="yahoo" class="sr-only search-engine-radio">
-                        <label for="engine-yahoo-default" class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">
-                            Yahoo
-                        </label>
-                    </div>
-
-                    <!-- Startpage -->
-                    <div class="search-engine-option-container" data-engine="startpage">
-                        <input type="radio" id="engine-startpage-default" name="search-engine-default" value="startpage" class="sr-only search-engine-radio">
-                        <label for="engine-startpage-default" class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">
-                            Startpage
-                        </label>
-                    </div>
-                </fieldset>
-                
-                <!-- Search Button -->
-                <button 
-                    class="w-full p-4 bg-blue-600 text-white text-lg font-semibold rounded-lg hover:bg-blue-500 transition-colors duration-200 search-button"
-                >
-                    Search
-                </button>
             </div>
         </div>
-    </div>
 
-    <!-- Template for new search tabs. Note: This is not a real <template> tag, just a hidden div for cloning. -->
-    <div id="search-page-template" class="hidden">
-        <div class="search-ui-container bg-gray-800 p-8 rounded-xl shadow-2xl w-full max-w-lg border border-gray-700">
-            <!-- Header with Settings -->
-            <div class="flex justify-between items-center text-center mb-6">
-                <div class="w-8"></div>
-                <div class="flex-1">
-                    <h1 class="text-4xl font-bold text-blue-300 mb-2">Orbit</h1>
-                    <p class="text-lg text-gray-200">Search the web.</p>
-                </div>
-                <button title="Settings" class="text-gray-400 hover:text-white transition-colors w-8 settings-button-clone">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 0 1 1.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.108 1.204.165.397.505.71.93.78l.893.15c.543.09.94.56.94 1.11v1.093c0 .55-.397 1.02-.94 1.11l-.893.149c-.425.07-.765.383-.93.78-.165.398-.143.854.108 1.204l.527.738c.32.447.27.058-.12 1.45l-.774.773a1.125 1.125 0 0 1-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.108-.397.165-.71.505-.78.93l-.15.893c-.09.543-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.149-.894c-.07-.424-.384-.764-.78-.93-.398-.164-.855-.142-1.205.108l-.737.527a1.125 1.125 0 0 1-1.45-.12l-.773-.774a1.125 1.125 0 0 1-.12-1.45l.527-.737c.25-.35.272-.806.108-1.204-.165-.397-.505-.71-.93-.78l-.893-.15c-.543-.09-.94-.56-.94-1.11v-1.093c0-.55.397-1.02.94-1.11l.893-.149c.425-.07.765-.383.93-.78.165.398.143.854-.108-1.204l-.527-.738a1.125 1.125 0 0 1 .12-1.45l.773-.773a1.125 1.125 0 0 1 1.45-.12l.737.527c.35.25.806.272 1.203.108.397-.165.71-.505.78-.93l.15-.893Z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                    </svg>
-                </button>
-            </div>
-            <div class="space-y-4">
-                <div>
-                    <label class="sr-only">Search</label>
-                    <input type="text" {{-- REMOVED STATIC PLACEHOLDER HERE --}}
-                           class="w-full p-4 bg-gray-700 text-white rounded-lg border border-gray-600 transition-all search-input">
-                </div>
-                <div class="text-red-400 text-sm text-center hidden p-2 rounded-lg bg-red-900/20 border border-red-400/30 message-area"></div>
-                
-                <!-- Search Engine Selector (ALL 8 Engines) - NOW IN 3-COLUMN GRID -->
-                <fieldset class="grid grid-cols-3 gap-2">
-                    <legend class="sr-only">Select a search engine</legend>
-                    
-                    <!-- Google -->
-                    <div class="search-engine-option-container" data-engine="google">
-                        <input type="radio" value="google" class="sr-only search-engine-radio" checked>
-                        <label class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">Google</label>
-                    </div>
-                    
-                    <!-- Bing -->
-                    <div class="search-engine-option-container" data-engine="bing">
-                        <input type="radio" value="bing" class="sr-only search-engine-radio">
-                        <label class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">Bing</label>
-                    </div>
-                    
-                    <!-- DuckDuckGo -->
-                    <div class="search-engine-option-container" data-engine="duckduckgo">
-                        <input type="radio" value="duckduckgo" class="sr-only search-engine-radio">
-                        <label class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">DuckDuckGo</label>
-                    </div>
-                    
-                    <!-- Brave -->
-                    <div class="search-engine-option-container" data-engine="brave">
-                        <input type="radio" value="brave" class="sr-only search-engine-radio">
-                        <label class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">Brave</label>
-                    </div>
-                    
-                    <!-- Ecosia -->
-                    <div class="search-engine-option-container" data-engine="ecosia">
-                        <input type="radio" value="ecosia" class="sr-only search-engine-radio">
-                        <label class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">Ecosia</label>
-                    </div>
-                    
-                    <!-- Qwant -->
-                    <div class="search-engine-option-container" data-engine="qwant">
-                        <input type="radio" value="qwant" class="sr-only search-engine-radio">
-                        <label class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">Qwant</label>
-                    </div>
-
-                    <!-- Yahoo -->
-                    <div class="search-engine-option-container" data-engine="yahoo">
-                        <input type="radio" value="yahoo" class="sr-only search-engine-radio">
-                        <label class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">Yahoo</label>
-                    </div>
-                    
-                    <!-- Startpage -->
-                    <div class="search-engine-option-container" data-engine="startpage">
-                        <input type="radio" value="startpage" class="sr-only search-engine-radio">
-                        <label class="block w-full text-center p-2 rounded-md border border-gray-600 cursor-pointer hover:bg-gray-700 transition-colors">Startpage</label>
-                    </div>
-                </fieldset>
-
-                <button class="w-full p-4 bg-blue-600 text-white text-lg font-semibold rounded-lg hover:bg-blue-500 transition-colors duration-200 search-button">
-                    Search
-                </button>
-            </div>
-        </div>
-    </div>
+    </div> <!-- End App Container -->
 
 
     <!-- Settings Modal -->
-    <div id="settings-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-        <div class="bg-gray-800 p-8 rounded-xl shadow-2xl w-full max-w-md border border-gray-700 space-y-6">
+    <div id="settings-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4 overflow-y-auto" style="backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);">
+        <div class="modal-bg bg-gray-800 p-6 sm:p-8 rounded-xl shadow-2xl w-full max-w-md border border-gray-700 space-y-6 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center">
                 <h2 class="text-2xl font-bold text-white">Settings</h2>
                 <button id="settings-close-button" class="text-gray-400 hover:text-white text-3xl p-1 leading-none transition-colors">&times;</button>
             </div>
+
+            <!-- Separator -->
+            <div class="border-t border-gray-700"></div>
             
+            <!-- Experience Mode Section -->
             <fieldset class="space-y-4">
-                <legend class="text-lg font-medium text-gray-200 mb-2">Experience Mode</legend>
+                <legend class="text-lg font-medium text-gray-200 mb-3">Experience Mode</legend>
                 <div>
                     <input type="radio" id="mode-classic" name="browser-mode" value="classic" class="sr-only peer">
-                    <label for="mode-classic" class="block p-4 rounded-lg bg-gray-700 border border-gray-600 cursor-pointer peer-checked:bg-blue-600 peer-checked:border-blue-500">
+                    <label for="mode-classic" class="radio-label block p-4 rounded-lg border cursor-pointer peer-checked:radio-label-checked border-gray-600 bg-gray-700 peer-checked:bg-blue-600 peer-checked:border-blue-500">
                         <span class="block text-md font-semibold text-white">Classic Mode</span>
-                        <span class="block text-sm text-gray-300">Opens search results in a new browser tab. (Default)</span>
+                        <span class="block text-sm text-gray-300">A simple search page. Results open in your system browser.</span>
                     </label>
                 </div>
                 <div>
                     <input type="radio" id="mode-web-browser" name="browser-mode" value="web-browser" class="sr-only peer">
-                    <label for="mode-web-browser" class="block p-4 rounded-lg bg-gray-700 border border-gray-600 cursor-pointer peer-checked:bg-blue-600 peer-checked:border-blue-500">
+                    <label for="mode-web-browser" class="radio-label block p-4 rounded-lg border cursor-pointer peer-checked:radio-label-checked border-gray-600 bg-gray-700 peer-checked:bg-blue-600 peer-checked:border-blue-500">
                         <span class="block text-md font-semibold text-white">Web Browser Mini</span>
-                        <span class="block text-sm text-gray-300">Loads search results in tabs inside the app. (Bing only)</span>
+                        <span class="block text-sm text-gray-300">Keep results in-app with tabs. Uses Bing for compatibility.</span>
                     </label>
                 </div>
-            </fieldset>
-
-            <!-- Theme Selection is intentionally hidden and locked to Classic as requested -->
-            <fieldset class="space-y-4 hidden"> 
-                <legend class="text-lg font-medium text-gray-200 mb-2">Design and Theme</legend>
                 <div>
-                    <input type="radio" id="theme-classic" name="browser-theme" value="classic" class="sr-only peer" checked>
-                    <label for="theme-classic" class="block p-4 rounded-lg bg-gray-700 border border-gray-600 cursor-pointer peer-checked:bg-blue-600 peer-checked:border-blue-500">
-                        <span class="block text-md font-semibold text-white">Classic (Active)</span>
-                        <span class="block text-sm text-gray-300">Dark theme with blue accents.</span>
+                    <input type="radio" id="mode-privacy-plus" name="browser-mode" value="privacy-plus" class="sr-only peer">
+                    <label for="mode-privacy-plus" class="radio-label block p-4 rounded-lg border cursor-pointer peer-checked:radio-label-checked border-gray-600 bg-gray-700 peer-checked:bg-blue-600 peer-checked:border-blue-500">
+                        <span class="block text-md font-semibold text-white">Privacy+ Mode</span>
+                        <span class="block text-sm text-gray-300">Only allows searching with Startpage for maximum privacy.</span>
+                    </label>
+                </div>
+            </fieldset>
+            
+            <!-- Separator -->
+            <div class="border-t border-gray-700"></div>
+
+            <!-- Widgets Section -->
+            <fieldset class="space-y-4">
+                <legend class="text-lg font-medium text-gray-200 mb-3">Widgets</legend>
+                <p class="text-sm text-gray-400 mb-3">Select a widget to display on the New Tab page.</p>
+                
+                <div>
+                    <input type="radio" id="widget-off" name="widget-mode" value="off" class="sr-only peer">
+                    <label for="widget-off" class="radio-label block p-3 rounded-lg border cursor-pointer peer-checked:radio-label-checked border-gray-600 bg-gray-700 peer-checked:bg-blue-600 peer-checked:border-blue-500">
+                        <span class="block text-md font-semibold text-white">Off</span>
+                    </label>
+                </div>
+                <div>
+                    <input type="radio" id="widget-time" name="widget-mode" value="time" class="sr-only peer">
+                    <label for="widget-time" class="radio-label block p-3 rounded-lg border cursor-pointer peer-checked:radio-label-checked border-gray-600 bg-gray-700 peer-checked:bg-blue-600 peer-checked:border-blue-500">
+                        <span class="block text-md font-semibold text-white">Time & Date</span>
+                    </label>
+                </div>
+                <div>
+                    <input type="radio" id="widget-weather" name="widget-mode" value="weather" class="sr-only peer" disabled>
+                    <label for="widget-weather" class="block p-3 rounded-lg border opacity-50 cursor-not-allowed radio-label border-gray-600 bg-gray-700">
+                        <span class="block text-md font-semibold text-white">Weather (Coming Soon)</span>
+                    </label>
+                </div>
+                <div>
+                    <input type="radio" id="widget-news" name="widget-mode" value="news" class="sr-only peer" disabled>
+                    <label for="widget-news" class="block p-3 rounded-lg border opacity-50 cursor-not-allowed radio-label border-gray-600 bg-gray-700">
+                        <span class="block text-md font-semibold text-white">News (Coming Soon)</span>
                     </label>
                 </div>
             </fieldset>
 
-            <button id="settings-save-button" class="w-full p-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-500 transition-colors">
+            <!-- Separator -->
+            <div class="border-t border-gray-700"></div>
+
+            <!-- Color & Quality Section -->
+            <fieldset class="space-y-2">
+                <legend class="text-lg font-medium text-gray-200 mb-2">Color & Quality</legend>
+                <p class="text-sm text-gray-400">Theme locked to "Classic" dark mode.</p>
+            </fieldset>
+
+            <!-- Separator -->
+            <div class="border-t border-gray-700"></div>
+
+            <!-- SafeSearch and Filters Section (UPDATED) -->
+            <fieldset class="space-y-2">
+                <legend class="text-lg font-medium text-gray-200 mb-2">SafeSearch and Filters</legend>
+                
+                <!-- 1. SafeSearch (FORCED ON) -->
+                <div class="flex items-center justify-between opacity-70 cursor-not-allowed">
+                    <label for="safe-search-toggle" class="text-sm text-gray-300 font-medium">Enable SafeSearch (Always On)</label>
+                    <!-- Toggle Switch - Disabled and Checked -->
+                    <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                        <!-- Checked and Disabled in HTML -->
+                        <input type="checkbox" name="safe-search-toggle" id="safe-search-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none" checked disabled/>
+                        <label for="safe-search-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-600 cursor-pointer"></label>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-400 mb-4">Helps filter explicit results from search.</p>
+
+                <!-- 2. Filter Slang (Coming Soon) -->
+                <div class="flex items-center justify-between opacity-40 cursor-not-allowed">
+                    <label class="text-sm text-gray-300 font-medium">Filter Slang and "Brain rot" (Coming soon)</label>
+                    <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                        <input type="checkbox" disabled class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none"/>
+                        <label class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-600"></label>
+                    </div>
+                </div>
+                
+                <!-- 3. Abbreviations Filter (Coming Soon) -->
+                <div class="flex items-center justify-between opacity-40 cursor-not-allowed">
+                    <label class="text-sm text-gray-300 font-medium">Filter abbreviations (Coming soon)</label>
+                    <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                        <input type="checkbox" disabled class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none"/>
+                        <label class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-600"></label>
+                    </div>
+                </div>
+
+                <!-- 4. Malicious Sites Filter (Coming Soon) -->
+                <div class="flex items-center justify-between opacity-40 cursor-not-allowed">
+                    <label class="text-sm text-gray-300 font-medium">Filter Malicious, Harmful, and Misleading sites (Coming soon)</label>
+                    <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                        <input type="checkbox" disabled class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none"/>
+                        <label class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-600"></label>
+                    </div>
+                </div>
+                
+                <!-- 5. Force HTTPS -->
+                <div class="flex items-center justify-between pt-2">
+                    <label for="force-https-toggle" class="text-sm text-gray-300 font-medium">Force HTTPS security standard</label>
+                    <!-- Toggle Switch -->
+                    <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                        <input type="checkbox" name="force-https-toggle" id="force-https-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                        <label for="force-https-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-600 cursor-pointer"></label>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-400">In Web Browser Mini mode, prevents access to sites that cannot run HTTPS.</p>
+            </fieldset>
+
+
+            <button id="settings-save-button" class="w-full p-3 accent-bg text-white font-semibold rounded-lg accent-bg-hover transition-colors">
                 Save & Close
             </button>
         </div>
     </div>
     
-    <!-- Luna AI Floating Button (Bottom Right) -->
-    <button id="luna-ai-button" title="Open Luna AI" 
-            class="fixed bottom-4 right-4 z-40 py-3 px-4 bg-fuchsia-600 rounded-lg shadow-2xl transition-all hover:bg-fuchsia-500 transform hover:scale-110 flex flex-col items-center">
-        <!-- Icon: moon_stars (on top) -->
-        <span class="material-symbols-outlined text-white text-2xl">moon_stars</span>
-        <!-- Text: Luna (below icon) -->
-        <span class="text-xs font-semibold text-white mt-1">Luna</span>
+    <!-- Luna AI Toggle Button -->
+    <button id="luna-button" class="fixed bottom-6 right-6 p-3 rounded-full accent-bg accent-bg-hover text-white shadow-lg transition-transform hover:scale-110 z-40 flex flex-col items-center justify-center w-16 h-16">
+        <span class="material-symbols-outlined text-2xl">moon_stars</span>
+        <span class="text-xs font-medium">Luna</span>
     </button>
-
-    <!-- Luna AI Chat Panel UI -->
-    <div id="luna-ai-panel" class="fixed right-0 top-0 h-full w-full sm:w-96 bg-gray-900 shadow-2xl z-50 transition-transform duration-300 transform translate-x-full flex flex-col border-l border-gray-700">
-        <!-- Header -->
-        <div class="flex items-center justify-between p-4 bg-gray-800 border-b border-gray-700 flex-shrink-0">
-            <h3 class="text-xl font-semibold text-fuchsia-400 flex items-center">
-                <span class="material-symbols-outlined mr-2 text-2xl">moon_stars</span>
-                Luna AI Assistant
-            </h3>
-            <button id="luna-ai-close-button" title="Close Luna AI" class="text-gray-300 hover:text-white transition-colors p-1 rounded-full hover:bg-gray-700">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-        </div>
-
-        <!-- Messages Area -->
-        <div id="luna-messages" class="flex-grow p-4 space-y-4 overflow-y-auto">
-            <!-- AI Welcome Message (The only starting message) -->
-            <div class="flex justify-start">
-                <div class="max-w-xs bg-fuchsia-900/50 p-3 rounded-xl rounded-bl-none text-sm shadow-lg text-gray-200">
-                    <p class="font-bold text-fuchsia-300 mb-1">Luna</p>
-                    <p>Hello! I'm Luna, your personal Orbit AI. I can help you summarize the current page, find related information, or answer any quick questions you have. How can I assist you?</p>
-                </div>
-            </div>
-            
-            <!-- Future messages will be added here -->
-            
-        </div>
-
-        <!-- Input Area -->
-        <div class="p-4 bg-gray-800 border-t border-gray-700 flex-shrink-0">
-            <div class="flex space-x-2">
-                <input id="luna-input" type="text" placeholder="Ask Luna anything..." 
-                       class="flex-grow p-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:ring-fuchsia-500 focus:border-fuchsia-500 transition-colors">
-                <button id="luna-send-button" title="Send Message" class="bg-fuchsia-600 hover:bg-fuchsia-500 text-white p-3 rounded-lg flex items-center justify-center transition-colors">
-                    <span class="material-symbols-outlined text-xl">send</span>
-                </button>
-            </div>
-            <p class="text-xs text-gray-400 mt-2">Luna operates on the Gemini API.</p>
-        </div>
+    
+    <!-- Privacy Mode Watermark -->
+    <div id="privacy-watermark" class="fixed bottom-2 left-2 text-xs text-gray-700 opacity-70 hidden">
+        Orbit_V.1.8/PrivacyMode
     </div>
 
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const tabBar = document.getElementById('tab-bar');
-            const tabContentArea = document.getElementById('tab-content-area');
-            const defaultNewTabButton = document.getElementById('new-tab-button-default');
-            const addNewTabButton = document.getElementById('add-new-tab');
-            const searchPageTemplate = document.getElementById('search-page-template');
+    <!-- New Tab Page Template -->
+    <template id="new-tab-template">
+        <div class="new-tab-page w-full h-full flex flex-col items-center justify-center p-4 overflow-y-auto">
             
-            // Settings Elements
-            const settingsButton = document.getElementById('settings-button');
-            const settingsModal = document.getElementById('settings-modal');
-            const settingsCloseButton = document.getElementById('settings-close-button');
-            const settingsSaveButton = document.getElementById('settings-save-button');
+            <!-- Widget Container -->
+            <div class="widget-container w-full max-w-lg text-center mb-8 h-24">
+                <!-- Widgets will be injected here by JS -->
+            </div>
+
+            <!-- Logo -->
+            <div class="flex-grow flex flex-col justify-center items-center w-full">
+                <h1 class="text-8xl font-bold text-gray-300 mb-8 flex items-center">
+                    <span class="text-blue-400">O</span>rbit
+                    <button class="settings-button p-2 ml-4 rounded-full text-gray-400 hover:bg-gray-700 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    </button>
+                </h1>
+
+                <!-- Search Bar -->
+                <div class="w-full max-w-lg">
+                    <div class="search-container accent-border-focus flex items-center bg-gray-700 rounded-full shadow-lg overflow-hidden border-2 border-transparent transition-all duration-300">
+                        <input type="text" class="search-input w-full p-4 bg-transparent text-gray-200 placeholder-color focus:outline-none" placeholder="Search for anything...">
+                        <button class="search-button p-4 text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                        </button>
+                    </div>
+                    <div class="message-area hidden text-red-400 text-center mt-2"></div>
+                </div>
+
+                <!-- Search Engines -->
+                <div class="engine-grid grid grid-cols-3 sm:grid-cols-4 md:grid-cols-3 gap-3 mt-8 w-full max-w-4xl px-4">
+                    <button data-engine="google" class="engine-button engine-grid-item p-4 rounded-lg shadow transition-all duration-200 flex flex-col items-center justify-center">
+                        <img src="https://www.google.com/s2/favicons?domain=google.com&sz=32" alt="Google" class="h-8 w-8 mb-2">
+                        <span class="text-sm font-medium text-white">Google</span>
+                    </button>
+                    <button data-engine="bing" class="engine-button engine-grid-item p-4 rounded-lg shadow transition-all duration-200 flex flex-col items-center justify-center">
+                        <img src="https://www.google.com/s2/favicons?domain=bing.com&sz=32" alt="Bing" class="h-8 w-8 mb-2">
+                        <span class="text-sm font-medium text-white">Bing</span>
+                    </button>
+                    <button data-engine="duckduckgo" class="engine-button engine-grid-item p-4 rounded-lg shadow transition-all duration-200 flex flex-col items-center justify-center">
+                        <img src="https://www.google.com/s2/favicons?domain=duckduckgo.com&sz=32" alt="DuckDuckGo" class="h-8 w-8 mb-2">
+                        <span class="text-sm font-medium text-white">DuckDuckGo</span>
+                    </button>
+                    <button data-engine="brave" class="engine-button engine-grid-item p-4 rounded-lg shadow transition-all duration-200 flex flex-col items-center justify-center">
+                        <img src="https://www.google.com/s2/favicons?domain=brave.com&sz=32" alt="Brave" class="h-8 w-8 mb-2">
+                        <span class="text-sm font-medium text-white">Brave</span>
+                    </button>
+                    <button data-engine="ecosia" class="engine-button engine-grid-item p-4 rounded-lg shadow transition-all duration-200 flex flex-col items-center justify-center">
+                        <img src="https:&#x2F;&#x2F;www.google.com/s2/favicons?domain=ecosia.org&sz=32" alt="Ecosia" class="h-8 w-8 mb-2" onerror="this.src='https://placehold.co/32x32/2b2b2b/e0e0e0?text=E'">
+                        <span class="text-sm font-medium text-white">Ecosia</span>
+                    </button>
+                    <button data-engine="qwant" class="engine-button engine-grid-item p-4 rounded-lg shadow transition-all duration-200 flex flex-col items-center justify-center">
+                        <img src="https://www.google.com/s2/favicons?domain=qwant.com&sz=32" alt="Qwant" class="h-8 w-8 mb-2">
+                        <span class="text-sm font-medium text-white">Qwant</span>
+                    </button>
+                    <button data-engine="yahoo" class="engine-button engine-grid-item p-4 rounded-lg shadow transition-all duration-200 flex flex-col items-center justify-center">
+                        <img src="https://www.google.com/s2/favicons?domain=yahoo.com&sz=32" alt="Yahoo" class="h-8 w-8 mb-2">
+                        <span class="text-sm font-medium text-white">Yahoo</span>
+                    </button>
+                    <button data-engine="startpage" class="engine-button engine-grid-item p-4 rounded-lg shadow transition-all duration-200 flex flex-col items-center justify-center">
+                        <img src="https://www.google.com/s2/favicons?domain=startpage.com&sz=32" alt="Startpage" class="h-8 w-8 mb-2">
+                        <span class="text-sm font-medium text-white">Startpage</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </template>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- Global State ---
+        let currentEngine = 'google';
+        let currentMode = 'classic'; // 'classic', 'web-browser', or 'privacy-plus'
+        let currentTheme = 'classic'; // Fixed to 'classic'
+        let safeSearchEnabled = true; // Hard-enforced in settings modal now
+        let forceHttps = true; // NEW STATE: Default to true for security
+        let currentWidget = 'off'; // 'off', 'time'
+        let tabCounter = 0;
+        let activeTabId = null; // This will store the ID of the *content* div (e.g., "content-tab-1")
+        let placeholderInterval;
+
+        // --- DOM Elements ---
+        const appContainer = document.getElementById('app-container');
+        const tabContainer = document.getElementById('tabs-container');
+        const tabContent = document.getElementById('tab-content');
+        const addTabButton = document.getElementById('add-tab-button');
+        const newTabTemplate = document.getElementById('new-tab-template');
+
+        // Settings Modal
+        const settingsModal = document.getElementById('settings-modal');
+        const settingsCloseButton = document.getElementById('settings-close-button');
+        const settingsSaveButton = document.getElementById('settings-save-button');
+        const forceHttpsToggle = document.getElementById('force-https-toggle'); // New HTTPS toggle
+        
+        // Watermark
+        const privacyWatermark = document.getElementById('privacy-watermark');
+
+        // Luna AI Elements
+        const lunaButton = document.getElementById('luna-button');
+        const lunaPanel = document.getElementById('luna-ai-panel');
+        const lunaCloseButton = document.getElementById('luna-close-button');
+        const lunaSendButton = document.getElementById('luna-send-button');
+        const lunaInput = document.getElementById('luna-input');
+        const lunaChatMessages = document.getElementById('luna-chat-messages');
+        
+        // Search Engines
+        const searchEngines = {
+            google: "https://www.google.com/search?q=",
+            bing: "https://www.bing.com/search?q=",
+            duckduckgo: "https://duckduckgo.com/?q=",
+            brave: "https://search.brave.com/search?q=",
+            ecosia: "https://www.ecosia.org/search?q=",
+            qwant: "https://www.qwant.com/?q=",
+            yahoo: "https://search.yahoo.com/search?p=",
+            startpage: "https://www.startpage.com/search?q="
+        };
+
+        // --- SafeSearch Blocklist ---
+        const blockedTerms = [
+            'porn', 'xxx', 'sex', 'nsfw', 'explicit', // Add more sensitive terms as needed
+        ];
+
+        function checkSafeSearch(query) {
+            const lowerQuery = query.toLowerCase();
+            return blockedTerms.some(term => lowerQuery.includes(term));
+        }
+
+        // --- Placeholder Cycling ---
+        const placeholders = [
+            "What is the capital of Canada?",
+            "How many days until halloween",
+            "Google Calendar",
+            "ChromeOS",
+            "Search for anything, the web is at your fingertips"
+        ];
+        let placeholderIndex = 0;
+
+        function updatePlaceholder() {
+            const inputs = document.querySelectorAll('.search-input');
+            if (inputs.length > 0) {
+                placeholderIndex = (placeholderIndex + 1) % placeholders.length;
+                const newPlaceholder = placeholders[placeholderIndex];
+                inputs.forEach(input => {
+                    if (document.activeElement !== input) { // Only update if not focused
+                        input.placeholder = newPlaceholder;
+                    }
+                });
+            }
+        }
+        
+        function startPlaceholderCycling() {
+            if (placeholderInterval) clearInterval(placeholderInterval);
+            placeholderInterval = setInterval(updatePlaceholder, 3000);
+        }
+
+        // --- Core Functions ---
+
+        function performSearch(query, engine) {
+            const rawQuery = query.trim();
+            // Find the message area associated with the currently active tab
+            const activeContent = document.getElementById(activeTabId);
+            if (!activeContent) {
+                console.error("No active content tab found to perform search.");
+                return; 
+            }
             
-            // Luna AI Elements
-            const lunaAiButton = document.getElementById('luna-ai-button');
-            const lunaAiPanel = document.getElementById('luna-ai-panel');
-            const lunaAiCloseButton = document.getElementById('luna-ai-close-button');
-            const lunaSendButton = document.getElementById('luna-send-button'); 
-            const lunaInput = document.getElementById('luna-input'); 
+            const messageArea = activeContent.querySelector('.message-area');
+            
+            if (messageArea) messageArea.classList.add('hidden'); // Hide message on new search
 
-            let currentMode = 'classic'; // Default mode
-            const fixedTheme = 'classic'; // Theme is now fixed
-
-            // --- SafeSearch Blocklist ---
-            const blockedWords = [
-                'filterme',
-                'blockthis',
-                'badword'
-                // ... more words would be added here
-            ];
-
-            function checkSafeSearch(query) {
-                const lowerCaseQuery = query.toLowerCase();
-                for (const blockedWord of blockedWords) {
-                    if (lowerCaseQuery.includes(blockedWord)) {
-                        return true; 
-                    }
+            if (rawQuery === "") {
+                if (messageArea) {
+                    messageArea.textContent = 'Please enter a search term.';
+                    messageArea.classList.remove('hidden');
                 }
-                return false; 
+                return;
             }
 
-            // --- Settings Functions ---
-
-            function openSettings() {
-                settingsModal.classList.remove('hidden');
-            }
-
-            function closeSettings() {
-                settingsModal.classList.add('hidden');
-            }
-
-            function saveSettings() {
-                const selectedMode = document.querySelector('input[name="browser-mode"]:checked').value;
-                localStorage.setItem('orbit-mode', selectedMode);
-                applyMode(selectedMode);
-                
-                // Theme is fixed to 'classic'
-                closeSettings();
-            }
-
-            function applyMode(mode) {
-                currentMode = mode;
-                document.body.classList.toggle('classic-mode', mode === 'classic');
-                document.body.classList.toggle('web-browser-mode', mode === 'web-browser');
-
-                if (mode === 'web-browser') {
-                    // Activate the default tab
-                    activateTab('new-tab-page-default');
-                    // Force default tab's search engine to Bing
-                    const defaultBingRadio = document.getElementById('engine-bing-default');
-                    if (defaultBingRadio) {
-                        defaultBingRadio.checked = true;
-                    }
-                } else {
-                    // In classic mode, the default page is just... visible.
-                    activateTab(null); // Deactivate all
-                }
-            }
-
-            function applyTheme(theme) {
-                // Since only 'classic' is allowed, we just enforce the base styling
-                document.body.classList.remove('theme-classic', 'theme-focus', 'theme-modern');
-                document.body.classList.add(`theme-${theme}`);
-            }
-
-            function loadSettings() {
-                const savedMode = localStorage.getItem('orbit-mode') || 'classic';
-                const modeRadio = document.getElementById(`mode-${savedMode}`);
-                if (modeRadio) {
-                    modeRadio.checked = true;
-                }
-                applyMode(savedMode);
-
-                // Always apply the fixed 'classic' theme regardless of localStorage
-                applyTheme(fixedTheme);
-            }
-
-            // --- Tab Functions ---
-
-            function activateTab(tabId) {
-                // Deactivate all tabs
-                document.querySelectorAll('.tab-item').forEach(tab => {
-                    tab.classList.remove('active');
-                });
-                // Deactivate all panes
-                document.querySelectorAll('.tab-pane').forEach(pane => {
-                    pane.classList.remove('active');
-                });
-
-                if (!tabId) return; // Called with null to deactivate all
-
-                const tabButton = document.querySelector(`.tab-item[data-tab-id="${tabId}"]`);
-                if (tabButton) {
-                    tabButton.classList.add('active');
-                }
-                
-                const tabPane = document.getElementById(tabId);
-                if (tabPane) {
-                    tabPane.classList.add('active');
-                }
-            }
-
-            function createResultTab(query, url) {
-                const tabId = `tab-result-${Date.now()}`;
-                const tabButton = document.createElement('div');
-                tabButton.className = 'tab-item';
-                tabButton.dataset.tabId = tabId;
-                tabButton.innerHTML = `
-                    <span class="tab-title">${query}</span>
-                    <button class="close-tab" data-tab-id="${tabId}">&times;</button>
-                `;
-                
-                const tabPane = document.createElement('div');
-                tabPane.className = 'tab-pane';
-                tabPane.id = tabId;
-                tabPane.innerHTML = `<iframe src="${url}"></iframe>`;
-
-                tabBar.insertBefore(tabButton, addNewTabButton);
-                tabContentArea.appendChild(tabPane);
-                activateTab(tabId);
-
-                tabButton.addEventListener('click', (e) => {
-                    if (e.target.classList.contains('close-tab')) return;
-                    activateTab(tabId);
-                });
-
-                tabButton.querySelector('.close-tab').addEventListener('click', () => {
-                    closeTab(tabId, 'new-tab-page-default');
-                });
-            }
-
-            function createSearchTab() {
-                if (currentMode !== 'web-browser') return; // Only in this mode
-
-                const tabId = `tab-search-${Date.now()}`;
-                const tabButton = document.createElement('div');
-                tabButton.className = 'tab-item';
-                tabButton.dataset.tabId = tabId;
-                tabButton.innerHTML = `
-                    <span class="tab-title">New Tab 🪐</span>
-                    <button class="close-tab" data-tab-id="${tabId}">&times;</button>
-                `;
-                
-                const tabPane = document.createElement('div');
-                tabPane.className = 'tab-pane flex flex-col items-center justify-center p-4';
-                tabPane.id = tabId;
-                // Clone the template's inner HTML
-                tabPane.innerHTML = searchPageTemplate.innerHTML;
-
-                tabBar.insertBefore(tabButton, addNewTabButton);
-                tabContentArea.appendChild(tabPane);
-
-                initSearchTab(tabPane, tabId);
-                activateTab(tabId);
-
-                tabButton.addEventListener('click', (e) => {
-                    if (e.target.classList.contains('close-tab')) return;
-                    activateTab(tabId);
-                });
-
-                tabButton.querySelector('.close-tab').addEventListener('click', () => {
-                    closeTab(tabId, 'new-tab-page-default');
-                });
-            }
-
-            function closeTab(tabId, fallbackTabId) {
-                const tabButton = document.querySelector(`.tab-item[data-tab-id="${tabId}"]`);
-                const tabPane = document.getElementById(tabId);
-                if (tabButton) tabButton.remove();
-                if (tabPane) tabPane.remove();
-                
-                // Find the next active tab, prioritizing the fallback if it exists
-                let newActiveTabId = fallbackTabId;
-                if (!document.querySelector(`.tab-item[data-tab-id="${newActiveTabId}"]`)) {
-                    // Get the ID of the first remaining tab
-                    newActiveTabId = tabBar.querySelector('.tab-item')?.dataset.tabId;
-                }
-                
-                activateTab(newActiveTabId);
-            }
-
-            // --- Search Function ---
-
-            function performSearch(searchInput, messageArea, radioButtons) {
-                const rawQuery = searchInput.value.trim();
-                messageArea.textContent = '';
-                messageArea.classList.add('hidden');
-
-                if (rawQuery === "") return;
-
-                if (checkSafeSearch(rawQuery)) {
+            // SafeSearch check (it's always enabled now, but the check still runs)
+            if (safeSearchEnabled && checkSafeSearch(rawQuery)) {
+                if (messageArea) {
                     messageArea.textContent = 'Your search contains words that are not allowed. Please try again.';
                     messageArea.classList.remove('hidden');
-                    return; 
                 }
-
-                const formattedQuery = rawQuery.split(' ').join('+');
-                let selectedEngineValue = 'google'; // Default
-                radioButtons.forEach(radio => {
-                    if (radio.checked) {
-                        selectedEngineValue = radio.value;
-                    }
-                });
-
-                let searchUrl = '';
-                switch (selectedEngineValue) {
-                    case 'bing': searchUrl = `https://www.bing.com/search?q=${formattedQuery}`; break;
-                    case 'duckduckgo': searchUrl = `https://duckduckgo.com/?q=${formattedQuery}`; break;
-                    case 'brave': searchUrl = `https://search.brave.com/search?q=${formattedQuery}`; break;
-                    case 'ecosia': searchUrl = `https://www.ecosia.org/search?q=${formattedQuery}`; break;
-                    case 'qwant': searchUrl = `https://www.qwant.com/?q=${formattedQuery}`; break;
-                    case 'yahoo': searchUrl = `https://search.yahoo.com/search?p=${formattedQuery}`; break;
-                    case 'startpage': searchUrl = `https://www.startpage.com/search?q=${formattedQuery}`; break;
-                    case 'google': default: searchUrl = `https://www.google.com/search?q=${formattedQuery}`; break;
-                }
-
-                // --- MODE-BASED ACTION ---
-                if (currentMode === 'classic') {
-                    // Classic Mode: Open in new browser tab
-                    window.open(searchUrl, '_blank');
-                } else {
-                    // Web Browser Mini: Open in-app tab
-                    createResultTab(rawQuery, searchUrl);
-                }
-                
-                searchInput.value = '';
+                return;
             }
-            
-            // --- Luna AI Typing Function ---
 
-            /**
-             * Animates text into a target DOM element letter by letter.
-             * @param {HTMLElement} element - The target element to write into.
-             * @param {string} text - The message to type.
-             * @param {number} [delay=50] - Delay in milliseconds per character.
-             */
-            function typeMessage(element, text, delay = 50) {
-                let i = 0;
-                element.textContent = ''; // Clear existing content
-                const messagesArea = document.getElementById('luna-messages');
+            const searchUrl = searchEngines[engine] + encodeURIComponent(rawQuery);
+
+            if (currentMode === 'classic' || currentMode === 'privacy-plus') {
+                // Classic & Privacy+ Modes: Open in new browser tab
+                window.open(searchUrl, '_blank');
+            } else if (currentMode === 'web-browser') {
+                // Web Browser Mini Mode: Open in a new in-app tab
+                createNewTab(true, searchUrl);
+            }
+        }
+
+        // --- Settings ---
+        function openSettings() {
+            // Re-check saved values when opening
+            document.getElementById(`mode-${currentMode}`).checked = true;
+            document.getElementById(`widget-${currentWidget}`).checked = true;
+            
+            // Set HTTPS toggle state
+            if (forceHttpsToggle) forceHttpsToggle.checked = forceHttps;
+
+            settingsModal.classList.remove('hidden');
+        }
+
+        function closeSettings() {
+            settingsModal.classList.add('hidden');
+        }
+
+        function saveSettings() {
+            // Get selected mode
+            const selectedMode = document.querySelector('input[name="browser-mode"]:checked').value;
+            const oldMode = currentMode;
+            localStorage.setItem('orbit-mode', selectedMode);
+            currentMode = selectedMode; // Update global state
+
+            // SafeSearch is hard-enforced ON
+            safeSearchEnabled = true;
+
+            // Get Force HTTPS
+            forceHttps = forceHttpsToggle.checked;
+            localStorage.setItem('orbit-force-https', forceHttps);
+            
+            // Get Widget
+            const selectedWidget = document.querySelector('input[name="widget-mode"]:checked').value;
+            localStorage.setItem('orbit-widget', selectedWidget);
+            currentWidget = selectedWidget; // Update global state
+
+            // Close modal
+            closeSettings();
+            
+            // --- Apply settings based on mode change ---
+            if (selectedMode !== oldMode) {
+                // Mode changed, we need to rebuild the UI state
+                resetUIForModeChange(selectedMode);
+            } else {
+                // Mode did not change, just apply widget and engine settings
+                applyBodyClasses(currentMode); // Re-apply classes in case of watermark change
+                applyWidget(currentWidget);
+                updateEngineVisibility(currentMode);
+            }
+        }
+
+        function resetUIForModeChange(newMode) {
+            // Clear all existing tabs and content
+            tabContainer.innerHTML = '';
+            tabContent.innerHTML = '';
+            tabCounter = 0;
+            activeTabId = null;
+
+            // Re-apply body classes for the new mode
+            applyBodyClasses(newMode);
+            // Re-initialize the browser state for the new mode
+            initializeBrowserState();
+        }
+
+        function applyBodyClasses(mode) {
+            document.body.classList.remove('mode-classic', 'mode-web-browser', 'mode-privacy-plus');
+            document.body.classList.add('theme-classic'); // Theme is always classic
+            
+            if (mode === 'web-browser') {
+                document.body.classList.add('mode-web-browser');
+                privacyWatermark.classList.add('hidden');
+            } else if (mode === 'privacy-plus') {
+                document.body.classList.add('mode-privacy-plus');
+                privacyWatermark.classList.remove('hidden');
+            } else { // classic mode
+                document.body.classList.add('mode-classic');
+                privacyWatermark.classList.add('hidden');
+            }
+        }
+
+        function updateEngineVisibility(mode) {
+            const allNewTabPages = document.querySelectorAll('.new-tab-page');
+            const savedEngine = localStorage.getItem('orbit-engine') || 'google';
+
+            allNewTabPages.forEach(page => {
+                const engineButtons = page.querySelectorAll('.engine-button');
                 
-                const interval = setInterval(() => {
-                    if (i < text.length) {
-                        element.textContent += text.charAt(i);
-                        i++;
-                        // Scroll to bottom every few characters for a smoother effect
-                        if (i % 3 === 0) {
-                            messagesArea.scrollTop = messagesArea.scrollHeight;
+                if (mode === 'web-browser') {
+                    // --- WEB BROWSER MODE ---
+                    selectEngine('bing', page);
+                    engineButtons.forEach(btn => {
+                        const isBing = btn.dataset.engine === 'bing';
+                        if (btn.dataset.engine !== 'bing') {
+                            btn.disabled = true;
+                            btn.classList.add('opacity-50', 'cursor-not-allowed');
+                        } else {
+                            btn.disabled = false;
+                            btn.classList.remove('opacity-50', 'cursor-not-allowed');
                         }
-                    } else {
-                        clearInterval(interval);
-                        // Ensure final scroll to the bottom
-                        messagesArea.scrollTop = messagesArea.scrollHeight;
-                    }
-                }, delay);
-            }
-
-            // --- Luna AI Functions ---
-
-            function toggleLunaAI() {
-                const isOpen = lunaAiPanel.classList.toggle('translate-x-full');
-                lunaAiButton.classList.toggle('hidden', !isOpen); // Show button when panel is closed
-            }
-
-            function handleLunaSend() {
-                const message = lunaInput.value.trim();
-                if (message === '') return;
-
-                const messagesArea = document.getElementById('luna-messages');
-
-                // 1. Display User Message
-                const userBubble = document.createElement('div');
-                userBubble.className = 'flex justify-end';
-                userBubble.innerHTML = `
-                    <div class="max-w-xs bg-blue-600 p-3 rounded-xl rounded-br-none text-sm text-white shadow-lg">
-                        <p>${message}</p>
-                    </div>
-                `;
-                messagesArea.appendChild(userBubble);
-                
-                lunaInput.value = '';
-
-                // 2. Setup Luna's Response Bubble
-                const lunaResponse = "I'm working on learning how to understand humans, come back soon.";
-
-                const lunaBubble = document.createElement('div');
-                lunaBubble.className = 'flex justify-start';
-                // Use a unique ID for the typing target to ensure the function writes to the right element
-                const typingTargetId = `luna-typing-${Date.now()}`; 
-                lunaBubble.innerHTML = `
-                    <div class="max-w-xs bg-fuchsia-900/50 p-3 rounded-xl rounded-bl-none text-sm shadow-lg text-gray-200">
-                        <p class="font-bold text-fuchsia-300 mb-1">Luna</p>
-                        <p id="${typingTargetId}"></p> 
-                    </div>
-                `;
-                messagesArea.appendChild(lunaBubble);
-
-                const typingTarget = document.getElementById(typingTargetId);
-                
-                // 3. Start the typing animation
-                typeMessage(typingTarget, lunaResponse);
-
-                // Initial scroll to the bottom after user message is posted
-                messagesArea.scrollTop = messagesArea.scrollHeight;
-            }
-
-
-            // --- Initialization ---
-
-            function initSearchTab(pane, tabId) {
-                const searchInput = pane.querySelector('.search-input');
-                const searchButton = pane.querySelector('.search-button'); 
-                const messageArea = pane.querySelector('.message-area');
-                const radioButtons = pane.querySelectorAll('.search-engine-radio');
-                const settingsButtonClone = pane.querySelector('.settings-button-clone');
-
-                // Make radio buttons unique (for search pane clones)
-                radioButtons.forEach((radio) => {
-                    const newId = `engine-${radio.value}-${tabId}`;
-                    radio.id = newId;
-                    radio.name = `search-engine-${tabId}`; 
-                    // Update the 'for' attribute of the related label
-                    const visibleLabel = radio.nextElementSibling;
-                    if (visibleLabel) {
-                        visibleLabel.setAttribute('for', newId);
-                    }
-                });
-                
-                // In web-browser mode, force Bing
-                if (currentMode === 'web-browser') {
-                    const bingRadio = pane.querySelector('input[value="bing"]');
-                    if(bingRadio) bingRadio.checked = true;
+                    });
+                } else if (mode === 'privacy-plus') {
+                    // --- PRIVACY+ MODE ---
+                    selectEngine('startpage', page);
+                    engineButtons.forEach(btn => {
+                        const isStartpage = btn.dataset.engine === 'startpage';
+                        if (btn.dataset.engine !== 'startpage') {
+                            btn.disabled = true;
+                            btn.classList.add('opacity-50', 'cursor-not-allowed');
+                        } else {
+                            btn.disabled = false;
+                            btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                        }
+                    });
+                } else {
+                    // --- CLASSIC MODE ---
+                    engineButtons.forEach(btn => {
+                        btn.disabled = false;
+                        btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    });
+                    // Restore selection to saved preference or default
+                    selectEngine(savedEngine, page);
                 }
-                
-                // Add search listeners
-                searchButton.addEventListener('click', () => {
-                    performSearch(searchInput, messageArea, radioButtons);
-                });
-                searchInput.addEventListener('keydown', (event) => {
-                    if (event.key === 'Enter') {
-                        performSearch(searchInput, messageArea, radioButtons);
-                    }
-                });
+            });
+        }
 
-                // Add settings listener to cloned button
-                if (settingsButtonClone) {
-                    settingsButtonClone.addEventListener('click', openSettings);
+
+        function loadSettings() {
+            // Load Mode
+            currentMode = localStorage.getItem('orbit-mode') || 'classic';
+            const modeRadio = document.getElementById(`mode-${currentMode}`);
+            if (modeRadio) modeRadio.checked = true;
+
+            // SafeSearch is now enforced ON
+            safeSearchEnabled = true;
+
+            // Load Force HTTPS
+            forceHttps = localStorage.getItem('orbit-force-https') !== 'false'; // Default to true
+            
+            // Load Widget
+            currentWidget = localStorage.getItem('orbit-widget') || 'off';
+            const widgetRadio = document.getElementById(`widget-${currentWidget}`);
+            if (widgetRadio) widgetRadio.checked = true;
+            
+            // Theme is fixed
+            currentTheme = 'classic';
+        }
+
+        // --- Widget Functions ---
+        function applyWidget(widget, container) {
+            // If no specific container is passed, apply to all
+            const containers = container ? [container] : document.querySelectorAll('.widget-container');
+            
+            containers.forEach(cont => {
+                if (!cont) return; 
+                cont.innerHTML = ''; // Clear previous widget
+                cont.classList.add('h-24'); // Ensure container has height
+
+                if (widget === 'time') {
+                    cont.innerHTML = `
+                        <div class="time-widget w-full h-full flex flex-col items-center justify-center text-white">
+                            <div class="time-display text-6xl font-bold"></div>
+                            <div class="date-display text-xl text-gray-400"></div>
+                        </div>
+                    `;
+                    updateTimeWidget(); // Call once immediately
                 }
+                // Add other widget 'else if' blocks here when ready
+            });
+        }
+            
+        function updateTimeWidget() {
+            if (currentWidget !== 'time') return; // Only update if active
+
+            const timeDisplays = document.querySelectorAll('.time-display');
+            const dateDisplays = document.querySelectorAll('.date-display');
+            
+            if (!timeDisplays.length || !dateDisplays.length) return;
+
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const timeString = `${hours}:${minutes}`;
+
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const dateString = now.toLocaleDateString(undefined, options);
+
+            timeDisplays.forEach(el => el.textContent = timeString);
+            dateDisplays.forEach(el => el.textContent = dateString);
+        }
+
+        // --- Tab Functions ---
+        function createNewTab(isSearchTab = false, url = "") {
+            tabCounter++;
+            const tabId = `tab-${tabCounter}`; // e.g., tab-1
+            const contentId = `content-${tabCounter}`; // e.g., content-1
+            let content;
+
+            // --- Create Content ---
+            if (isSearchTab) {
+                let isBlocked = false;
+                
+                // 1. HTTPS Enforcement Check
+                if (currentMode === 'web-browser' && forceHttps) {
+                    // Check if the initial search URL is HTTP. 
+                    // This primarily applies if a future feature allows arbitrary URL input, 
+                    // since the search engine URLs are already HTTPS.
+                    if (url.startsWith('http://') && !url.startsWith('https://')) {
+                        isBlocked = true;
+                    }
+                }
+
+                if (isBlocked) {
+                    // Create blocked content
+                    content = document.createElement('div');
+                    content.id = contentId;
+                    content.className = 'iframe-container w-full h-full hidden flex flex-col items-center justify-center p-8';
+                    content.innerHTML = `
+                        <div class="text-center p-8 rounded-xl bg-gray-700 max-w-md shadow-xl border border-red-700">
+                            <span class="material-symbols-outlined text-red-500 text-6xl">lock_open</span>
+                            <h3 class="text-2xl font-bold mt-4 text-white">Access Blocked</h3>
+                            <p class="text-gray-400 mt-2">Orbit is configured to enforce the **HTTPS** security standard. The requested site cannot be loaded because it uses the insecure **HTTP** protocol.</p>
+                        </div>
+                    `;
+                } else {
+                    // Create iframe content for a search result
+                    content = document.createElement('div');
+                    content.id = contentId;
+                    content.className = 'iframe-container w-full h-full hidden';
+                    
+                    const iframe = document.createElement('iframe');
+                    iframe.id = `iframe-${tabId}`; // iframe id can be different
+                    iframe.src = url;
+                    iframe.setAttribute('sandbox', 'allow-forms allow-modals allow-popups allow-pointer-lock allow-same-origin allow-scripts');
+                    content.appendChild(iframe);
+                }
+
+            } else {
+                // Create "New Tab" content by cloning the template
+                const template = document.getElementById('new-tab-template');
+                content = template.content.firstElementChild.cloneNode(true);
+                content.id = contentId;
+                content.classList.add('hidden'); // Start hidden
+                
+                // Init listeners and widgets for this new tab page
+                initSearchListeners(content);
+                applyWidget(currentWidget, content.querySelector('.widget-container'));
+                updateEngineVisibility(currentMode); // Apply engine restrictions
             }
             
-            // --- NEW PLACEHOLDER CYCLING LOGIC ---
-            const placeholders = [
-                "What is the capital of Canada?",
-                "How many days until halloween?",
-                "Google Calendar",
-                "Why is ChromeOS so lightweight?",
-                "Search for anything, the web is at your fingertips"
-            ];
-            let currentIndex = 0;
+            tabContent.appendChild(content);
 
-            function cyclePlaceholder() {
-                const nextPlaceholder = placeholders[currentIndex];
 
-                // Target all search inputs (default and cloned)
-                document.querySelectorAll('.search-input').forEach(input => {
-                    input.placeholder = nextPlaceholder;
+            // --- Create Tab Button (if in web-browser mode) ---
+            if (currentMode === 'web-browser') {
+                const tab = document.createElement('button');
+                tab.id = tabId; // This is the button's ID
+                tab.dataset.contentId = contentId; // Link button to its content
+                tab.className = 'tab-inactive text-sm px-4 py-2 rounded-t-lg relative flex items-center space-x-2 transition-colors duration-150';
+
+                let title = isSearchTab ? "Loading..." : "New Tab 🪐";
+                let isClosable = isSearchTab || tabCounter > 1; // Only the first "new tab" is not closable
+
+                // Add tab title and close button
+                const titleSpan = document.createElement('span');
+                titleSpan.className = 'tab-title truncate max-w-[150px]';
+                titleSpan.textContent = title;
+                tab.appendChild(titleSpan);
+
+                if (isClosable) {
+                    const closeButton = document.createElement('span');
+                    closeButton.className = 'close-tab ml-2 text-gray-400 hover:text-white cursor-pointer';
+                    closeButton.innerHTML = '&times;';
+                    closeButton.addEventListener('click', (e) => {
+                        e.stopPropagation(); // Don't trigger tab switch
+                        closeTab(tabId, contentId);
+                    });
+                    tab.appendChild(closeButton);
+                }
+
+                tab.addEventListener('click', () => {
+                    activateTab(contentId);
                 });
 
-                currentIndex = (currentIndex + 1) % placeholders.length;
+                tabContainer.appendChild(tab);
+
+                // Set title for search tabs after load
+                if (isSearchTab && !isBlocked) {
+                    const iframe = content.querySelector('iframe');
+                    iframe.onload = () => {
+                        try {
+                            const iframeTitle = iframe.contentWindow.document.title;
+                            if (iframeTitle) {
+                                titleSpan.textContent = iframeTitle.substring(0, 20) + (iframeTitle.length > 20 ? '...' : '');
+                            } else {
+                                 titleSpan.textContent = "Search Result";
+                            }
+                        } catch (e) {
+                            titleSpan.textContent = "Search Result";
+                        }
+                    };
+                }
             }
 
-            // Start immediately and then repeat every 3 seconds (3000ms)
-            cyclePlaceholder(); 
-            setInterval(cyclePlaceholder, 3000);
-            // --- END NEW LOGIC ---
+            activateTab(contentId); // Activate the content panel
+        }
 
-            // --- Initial Setup and Event Attachments ---
+        function activateTab(contentId) {
+            // Deactivate old tab
+            if (activeTabId) {
+                // Hide old content
+                const oldContent = document.getElementById(activeTabId);
+                if (oldContent) oldContent.classList.add('hidden');
 
-            // Load settings on start
-            loadSettings();
+                // Deactivate old tab button (if in web-browser mode)
+                if (currentMode === 'web-browser') {
+                    const oldTabButton = document.querySelector(`.tab-active[data-content-id="${activeTabId}"]`);
+                    if (oldTabButton) oldTabButton.classList.replace('tab-active', 'tab-inactive');
+                }
+            }
 
-            // Initialize the default search tab
-            initSearchTab(document.getElementById('new-tab-page-default'), 'default');
+            // Activate new tab
+            const newContent = document.getElementById(contentId);
+            
+            if (newContent) {
+                newContent.classList.remove('hidden');
+                activeTabId = contentId; // Store the ID of the content div
 
-            // "New Tab" (default) button click
-            defaultNewTabButton.addEventListener('click', () => {
-                activateTab('new-tab-page-default');
+                // Activate new tab button (if in web-browser mode)
+                if (currentMode === 'web-browser') {
+                     const newTabButton = document.querySelector(`[data-content-id="${contentId}"]`);
+                     if (newTabButton) newTabButton.classList.replace('tab-inactive', 'tab-active');
+                }
+                
+                // If it's a new-tab-page, ensure its search input placeholder is updated
+                if (newContent.classList.contains('new-tab-page')) {
+                    const input = newContent.querySelector('.search-input');
+                    if (input) {
+                        input.placeholder = placeholders[placeholderIndex];
+                    }
+                }
+            }
+        }
+
+        function closeTab(tabId, contentId) { // Now accepts both IDs
+            const tab = document.getElementById(tabId);
+            const content = document.getElementById(contentId);
+
+            if (tab) tab.remove();
+            if (content) content.remove();
+
+            // If we closed the active tab, switch to the last tab
+            if (activeTabId === contentId) {
+                const lastTab = tabContainer.lastElementChild;
+                if (lastTab) {
+                    activateTab(lastTab.dataset.contentId); // Activate using contentId
+                } else {
+                    // This should not happen if we prevent closing the last tab
+                    activeTabId = null;
+                    createNewTab(false); // Ensure there's always one tab
+                }
+            }
+        }
+
+        function resetToClassicView() {
+            // Remove all tabs and content
+            tabContainer.innerHTML = '';
+            tabContent.innerHTML = '';
+            tabCounter = 0;
+            activeTabId = null;
+            
+            // Add back the single "New Tab" page for classic mode
+            initializeBrowserState();
+        }
+
+        // --- Event Listeners Initialization ---
+        function initSearchListeners(container) { // Must provide container
+            
+            const searchInput = container.querySelector('.search-input');
+            const searchButton = container.querySelector('.search-button');
+            const messageArea = container.querySelector('.message-area');
+            const engineGrid = container.querySelector('.engine-grid');
+            const settingsButton = container.querySelector('.settings-button');
+
+            if (!searchInput || !searchButton || !messageArea || !engineGrid || !settingsButton) {
+                console.error("initSearchListeners: Could not find all required elements.");
+                return;
+            }
+
+            // Set initial selected engine from storage
+            let savedEngine = localStorage.getItem('orbit-engine') || 'google';
+            
+            // Force engine based on mode
+            if(currentMode === 'web-browser') savedEngine = 'bing';
+            if(currentMode === 'privacy-plus') savedEngine = 'startpage';
+            
+            selectEngine(savedEngine, container);
+            
+            // Apply current placeholder
+            searchInput.placeholder = placeholders[placeholderIndex];
+
+            // Engine button listeners
+            engineGrid.querySelectorAll('.engine-button').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const newEngine = button.dataset.engine;
+                    
+                    // Don't do anything if a disabled button is somehow clicked
+                    if (button.disabled) return; 
+
+                    messageArea.classList.add('hidden');
+                    currentEngine = newEngine;
+                    localStorage.setItem('orbit-engine', currentEngine);
+                    
+                    // Update selection visual for ALL open new-tab pages
+                    document.querySelectorAll('.new-tab-page').forEach(page => {
+                        selectEngine(currentEngine, page);
+                    });
+                });
             });
 
-            // "+" button click
-            addNewTabButton.addEventListener('click', createSearchTab);
+            // Main search button
+            searchButton.addEventListener('click', () => {
+                performSearch(searchInput.value, currentEngine);
+            });
 
-            // Settings button listeners
-            settingsButton.addEventListener('click', openSettings);
+            // Search on Enter key
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    performSearch(searchInput.value, currentEngine);
+                }
+            });
+
+            // Settings Button Listener (only add if not already added)
+            if (!settingsButton.dataset.listenerAdded) {
+                 settingsButton.addEventListener('click', openSettings);
+                 settingsButton.dataset.listenerAdded = "true"; // prevent multiple listeners
+            }
+        }
+
+        function selectEngine(engineId, parentElement) {
+            if (!parentElement) return;
+            // Remove 'selected' from all buttons within this parent
+            parentElement.querySelectorAll('.engine-button').forEach(btn => {
+                btn.classList.remove('selected', 'accent-bg');
+            });
+            // Add 'selected' to the correct button
+            const selectedBtn = parentElement.querySelector(`.engine-button[data-engine="${engineId}"]`);
+            if (selectedBtn) {
+                selectedBtn.classList.add('selected', 'accent-bg');
+                currentEngine = engineId; // Update global state
+            }
+        }
+
+        // --- Luna AI Functions ---
+        function toggleLunaPanel() {
+            lunaPanel.classList.toggle('open');
+            // Auto-focus input when opening
+            if (lunaPanel.classList.contains('open')) {
+                lunaInput.focus();
+            }
+        }
+
+        function addMessageToLunaChat(message, sender) {
+            const messageEl = document.createElement('div');
+            messageEl.classList.add('flex', 'w-full', (sender === 'user' ? 'justify-end' : 'justify-start'), 'mb-4');
+            
+            const bubble = document.createElement('div');
+            bubble.classList.add('p-3', 'rounded-lg', 'max-w-xs', 'text-white', 'break-words');
+            
+            if (sender === 'user') {
+                bubble.classList.add('luna-bubble-user', 'rounded-br-none');
+            } else {
+                bubble.classList.add('luna-bubble-ai', 'rounded-bl-none');
+            }
+            
+            bubble.textContent = message; // Set text content directly for user
+            messageEl.appendChild(bubble);
+            lunaChatMessages.appendChild(messageEl);
+
+            // Scroll to bottom
+            lunaChatMessages.scrollTop = lunaChatMessages.scrollHeight;
+            
+            return bubble; // Return the bubble to type into it
+        }
+
+        function typeMessage(element, text) {
+            let index = 0;
+            element.textContent = ""; // Clear it first
+            
+            const intervalId = setInterval(() => {
+                if (index < text.length) {
+                    element.textContent += text.charAt(index);
+                    index++;
+                    lunaChatMessages.scrollTop = lunaChatMessages.scrollHeight;
+                } else {
+                    clearInterval(intervalId);
+                }
+            }, 30); // Adjust typing speed (milliseconds)
+        }
+
+        function handleLunaSend() {
+            const userMessage = lunaInput.value.trim();
+            if (userMessage === '') return;
+
+            // Add user's message
+            addMessageToLunaChat(userMessage, 'user'); // This now correctly sets the text
+            lunaInput.value = '';
+
+            // Add AI's placeholder response with typing animation
+            setTimeout(() => {
+                const aiBubble = addMessageToLunaChat("", 'ai'); // Create empty bubble
+                typeMessage(aiBubble, "I'm working on learning how to understand humans, come back soon.");
+            }, 500); // Short delay before AI "starts typing"
+        }
+
+        // --- Function to Setup Initial Browser State based on Mode ---
+        function initializeBrowserState() {
+            // Clear any previous content just in case
+            tabContainer.innerHTML = '';
+            tabContent.innerHTML = '';
+            tabCounter = 0;
+            activeTabId = null;
+
+            if (currentMode === 'web-browser') {
+                // Web browser mode starts with one "New Tab"
+                createNewTab(false);
+            } else {
+                // Classic and Privacy+ modes just show the new tab content directly
+                const template = document.getElementById('new-tab-template');
+                if (!template) {
+                    console.error("Template not found!");
+                    return;
+                }
+                const content = template.content.firstElementChild.cloneNode(true);
+                const contentId = 'content-tab-0'; // A static ID for the single page
+                content.id = contentId;
+                
+                tabContent.appendChild(content);
+                activateTab(contentId); // This will set activeTabId = 'content-tab-0' and show it
+                
+                // Manually init listeners and widgets for this static page
+                initSearchListeners(content);
+                applyWidget(currentWidget, content.querySelector('.widget-container'));
+                updateEngineVisibility(currentMode);
+            }
+        }
+
+        // --- Initial Setup Function ---
+        function initializeApp() {
+            // 1. Load settings from localStorage into variables
+            loadSettings(); 
+            
+            // 2. Apply the visual theme first (also applies mode classes and watermark visibility)
+            applyBodyClasses(currentMode); 
+
+            // 3. Initialize the UI based on the loaded mode
+            initializeBrowserState(); 
+
+            // 4. Start timers and add global listeners
+            startPlaceholderCycling();
+            setInterval(updateTimeWidget, 10000); // Update time widget every 10 seconds
+
+            // Settings Listeners
+            // Note: The settings button listener is added in initSearchListeners
             settingsCloseButton.addEventListener('click', closeSettings);
             settingsSaveButton.addEventListener('click', saveSettings);
-            
-            // Luna AI button listeners
-            lunaAiButton.addEventListener('click', toggleLunaAI);
-            lunaAiCloseButton.addEventListener('click', toggleLunaAI);
+
+            // Tab Listeners
+            addTabButton.addEventListener('click', () => createNewTab(false));
+
+            // Luna AI Listeners
+            lunaButton.addEventListener('click', toggleLunaPanel);
+            lunaCloseButton.addEventListener('click', toggleLunaPanel);
             lunaSendButton.addEventListener('click', handleLunaSend);
-            lunaInput.addEventListener('keydown', (e) => {
+            lunaInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
                     handleLunaSend();
                 }
             });
+        }
+        
+        // --- START THE APP ---
+        initializeApp();
 
-        });
-    </script>
+    });
+</script>
 
 </body>
 </html>
